@@ -23,6 +23,7 @@ public class VoltMeter : MonoBehaviour
         reading bl = blackLead.getReading();
         reading rl = redLead.getReading();
 
+            // Meter reading logic
         if( bl.getPhase() == ' ' || rl.getPhase() == ' ')
         {
             this.text.text = "0v";
