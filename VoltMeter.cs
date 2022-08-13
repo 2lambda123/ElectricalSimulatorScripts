@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,8 +37,15 @@ public class VoltMeter : MonoBehaviour
             else if( rl.getPotential() == 0)
                 this.text.text = bl.getPotential() + "v";
 
-            if( bl.getPotential() == 120 && rl.getPotential() == 120)
+            else if( bl.getPotential() == 120 && rl.getPotential() == 120)
                 this.text.text = "208v";
+
+            else if( bl.getPotential() == 277 && rl.getPotential() == 277)
+                this.text.text = "480v";
+            else
+                this.text.text = Mathf.Abs(rl.getPotential() - bl.getPotential()) + "v";
+            
+
         }
 
 
