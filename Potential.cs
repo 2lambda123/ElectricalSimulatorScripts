@@ -40,6 +40,15 @@ public class Potential : MonoBehaviour
 			case 'c':
 				this.gameObject.AddComponent<setColorBlue>();
 				break;
+			case 'd':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(165/255.0f,42/255.0f,42/255.0f,1));     
+				break;
+			case 'e':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 165/255.0f, 0));     
+				break;
+			case 'f':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));     
+				break;
 		}
 	}
 
@@ -61,6 +70,15 @@ public class Potential : MonoBehaviour
 				break;
 			case 'c':
 				this.gameObject.AddComponent<setColorBlue>();
+				break;
+			case 'd':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(165/255.0f,42/255.0f,42/255.0f,1));     
+				break;
+			case 'e':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 165/255.0f, 0));     
+				break;
+			case 'f':
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));      
 				break;
 		}
 
