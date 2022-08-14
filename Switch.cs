@@ -29,6 +29,7 @@ public class Switch : MonoBehaviour
                     Potential p2 = loadSide.AddComponent<Potential>();
                     p2.setParams(false, p.getPhase(), p.getPotential());
                     p2.addChild(lineSide);
+                    p2.setAsRemoteConnection();
                 }
             }/*else{
 
@@ -41,7 +42,10 @@ public class Switch : MonoBehaviour
         {
             Potential p2 = loadSide.GetComponent<Potential>();
             if(p2 != null)
+            {
+                Debug.Log("IM SPAZZING!");
                 Destroy(p2);
+            }
             // TODO: Add a way for items to check back for source
             //loadSide.AddComponent<Neutral>();
         }

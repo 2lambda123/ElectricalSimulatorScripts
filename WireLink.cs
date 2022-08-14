@@ -34,6 +34,7 @@ public class WireLink : MonoBehaviour
                 Potential subP = obj.GetComponent<Potential>();
                 if( subP != null)
                 {
+                    Debug.Log("Inactive");
                     subP.setAsInactive();
                 }
             }
