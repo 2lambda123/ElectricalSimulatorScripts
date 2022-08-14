@@ -7,6 +7,8 @@ public class MeterLead : MonoBehaviour
     public Transform meterTip;
     public reading meterReading;
 
+    private bool debug;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +34,7 @@ public class MeterLead : MonoBehaviour
                 if(p!= null)
                 {
                     this.meterReading = new reading(p.getPhase(), p.getPotential(), p.getAmperage());
-                    
+
                     if(debug)
                     {
                         Debug.Log("Meter reading: " + this.meterReading.toString());

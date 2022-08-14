@@ -6,9 +6,6 @@ using System.Text;
 
 public class Potential : MonoBehaviour
 {
-	//aterial mat;
-	//GameObject obj;
-
 		// If this is a source of electrical power
 	public bool isSource;
 
@@ -24,6 +21,8 @@ public class Potential : MonoBehaviour
 		// For debug output
 	bool debug;
 
+	bool isRemoteConnection;
+	public List<GameObject> remoteChildren;
 
 
 	void Start()
@@ -50,6 +49,12 @@ public class Potential : MonoBehaviour
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));     
 				break;
 		}
+
+		// TEST CODE
+			// Checks if there is a wire link on this object
+		WireLink wl = this.gameObject.GetComponent<WireLink>();
+		if( wl != null )
+			wl.energizeLink(this.gameObject, this.phase, this.myPotential);
 	}
 
 
@@ -100,6 +105,18 @@ public class Potential : MonoBehaviour
 	public float getAmperage()
 	{
 		return 0.0f;
+	}
+
+	
+	public void setAsRemoteConnection()
+	{
+		this.isRemoteConnection = true;
+	}
+
+
+	public void setAsInactive()
+	{
+		this.isRemoteConnection = false;
 	}
 	
 
@@ -152,7 +169,7 @@ public class Potential : MonoBehaviour
 			// Last call in function. Destroyes potential if not there
 		if(!isTouchingSource)
 		{
-			if(isSource)
+			if(isSource || isRemoteConnection)
 				return;
 			Destroy(this.gameObject.GetComponent<Potential>());
 			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
