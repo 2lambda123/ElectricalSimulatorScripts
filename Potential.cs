@@ -126,6 +126,23 @@ public class Potential : MonoBehaviour
 		this.isRemoteConnection = false;
 	}
 	
+	public void addChild(GameObject obj)
+	{
+		if(remoteChildren == null)
+		{
+			remoteChildren = new List<GameObject>();
+		}
+		if(!remoteChildren.Contains(obj))
+		{
+			remoteChildren.Add(obj);
+		}
+	}
+
+	public void removeChild(GameObject obj)
+	{
+		if( remoteChildren != null )
+		remoteChildren.Remove(obj);
+	}
 
 		// Where the update happends to check the sphere overlapping
 	private void FixedUpdate()
@@ -178,7 +195,7 @@ public class Potential : MonoBehaviour
 		{
 			if(isSource)
 				return;
-			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", new Color(1,1,1,1));
+			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
 			Destroy(this.gameObject.GetComponent<Potential>());
 		}
 	}
