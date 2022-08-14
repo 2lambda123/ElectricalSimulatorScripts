@@ -8,6 +8,9 @@ public class Lamp : MonoBehaviour
     public bool isTouchingPhase;
     public Collider[] hitColliders;
 
+    public GameObject lineSide;
+    public GameObject loadSide;
+
     bool isOn;
     // Start is called before the first frame update
     void Start()
@@ -18,20 +21,26 @@ public class Lamp : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if( isTouchingNeutral && isTouchingPhase )
+        
+        if( lineSide.GetComponent<Potential>() != null && loadSide.GetComponent<Neutral>() != null) 
+        //if( isTouchingNeutral && isTouchingPhase )
         {
             if( !this.isOn )
+            {
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));      
-            this.isOn = true;
+                this.isOn = true;
+            }
         }else{
             if( this.isOn )
-				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(1,1,1));      
-            this.isOn = false;
+            {
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.white);      
+                this.isOn = false;
+            }
         }
     }
     private void FixedUpdate()
 	{
+        /*
 		hitColliders = Physics.OverlapSphere(transform.position,0.6f);
         this.isTouchingPhase = false;
         this.isTouchingNeutral = false;
@@ -42,11 +51,14 @@ public class Lamp : MonoBehaviour
             Neutral n = c.gameObject.GetComponent<Neutral>();
 
             if( p != null )
+            {
                 this.isTouchingPhase = true;
+                Debug.Log("Lamp on because of:\t\t\t" + p.gameObject);
+            }
 
             if( n != null )
                 this.isTouchingNeutral = true;
-        }
+        }*/
 	}
 
 }
