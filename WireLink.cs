@@ -33,7 +33,18 @@ public class WireLink : MonoBehaviour
             {
                 Potential subP = obj.GetComponent<Potential>();
                 if( subP != null)
+                {
                     subP.setAsInactive();
+                }
+            }
+        }else{
+            foreach(GameObject obj in linkedObjects)
+            {
+                Potential subP = obj.GetComponent<Potential>();
+                if( subP != null)
+                {
+                    subP.setAsRemoteConnection();
+                }
             }
         }
     }

@@ -8,6 +8,7 @@ public class Potential : MonoBehaviour
 {
 		// If this is a source of electrical power
 	public bool isSource;
+	public bool isNeutral;
 
 	public char phase;
 	public int myPotential;
@@ -31,13 +32,16 @@ public class Potential : MonoBehaviour
 		switch (phase)
 		{
 			case 'a':
-				this.gameObject.AddComponent<setColorBlack>();
+				//this.gameObject.AddComponent<setColorBlack>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.black); 
 				break;
 			case 'b':
-				this.gameObject.AddComponent<setColorRed>();
+				//this.gameObject.AddComponent<setColorRed>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.red); 
 				break;
 			case 'c':
-				this.gameObject.AddComponent<setColorBlue>();
+				//this.gameObject.AddComponent<setColorBlue>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.blue); 
 				break;
 			case 'd':
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(165/255.0f,42/255.0f,42/255.0f,1));     
@@ -68,13 +72,16 @@ public class Potential : MonoBehaviour
 		switch (phase)
 		{
 			case 'a':
-				this.gameObject.AddComponent<setColorBlack>();
+				//this.gameObject.AddComponent<setColorBlack>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.black);     
 				break;
 			case 'b':
-				this.gameObject.AddComponent<setColorRed>();
+				//this.gameObject.AddComponent<setColorRed>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.red);     
 				break;
 			case 'c':
-				this.gameObject.AddComponent<setColorBlue>();
+				//this.gameObject.AddComponent<setColorBlue>();
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.blue);     
 				break;
 			case 'd':
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(165/255.0f,42/255.0f,42/255.0f,1));     
@@ -167,12 +174,12 @@ public class Potential : MonoBehaviour
 		}
 
 			// Last call in function. Destroyes potential if not there
-		if(!isTouchingSource)
+		if(!isTouchingSource && !isRemoteConnection)
 		{
-			if(isSource || isRemoteConnection)
+			if(isSource)
 				return;
+			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", new Color(1,1,1,1));
 			Destroy(this.gameObject.GetComponent<Potential>());
-			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
 		}
 	}
 
@@ -201,10 +208,14 @@ public class Potential : MonoBehaviour
 		for(int i = 0; i < hitColliders.Length; i++)
 		{
 			if( hitColliders[i].gameObject.transform != initiated.transform && hitColliders[i].gameObject.transform != this.gameObject.transform)
-				if( hitColliders[i].gameObject.GetComponent<Potential>().findSource(this.gameObject))
-				{
-					return true;
-				}
+			{
+				Potential op = hitColliders[i].gameObject.GetComponent<Potential>();
+				if( op != null )
+					if( op.findSource(this.gameObject))
+					{
+						return true;
+					}
+			}
 		}
 
 		return false;

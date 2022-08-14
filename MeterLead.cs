@@ -31,6 +31,8 @@ public class MeterLead : MonoBehaviour
                     Debug.Log("Meter is reading something");
                 
                 Potential p =hitColliders[i].gameObject.GetComponent<Potential>();
+                Neutral n = hitColliders[i].gameObject.GetComponent<Neutral>();
+
                 if(p!= null)
                 {
                     this.meterReading = new reading(p.getPhase(), p.getPotential(), p.getAmperage());
@@ -40,6 +42,9 @@ public class MeterLead : MonoBehaviour
                         Debug.Log("Meter reading: " + this.meterReading.toString());
                         Debug.Log("Meter reading2: " + p.getPotential().ToString());
                     }
+                }else if(n!=null)
+                {
+                    this.meterReading = new reading('n', 0, 0);
                 }
                 else
                     this.meterReading = new reading(' ',0,0);
