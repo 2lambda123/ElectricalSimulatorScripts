@@ -12,6 +12,8 @@ public class VoltMeter : MonoBehaviour
 
     public TMP_Text text;
 
+    public char selectedFunction;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,32 @@ public class VoltMeter : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        switch( this.selectedFunction )
+        {
+            case 'v':
+                blackLead.setFunction(selectedFunction);
+                redLead.setFunction(selectedFunction);
+                volts();
+                break;
+            case 'o':
+                blackLead.setFunction(selectedFunction);
+                redLead.setFunction(selectedFunction);
+                ohmMeter();
+                //blackLead.findPosLead();
+                break;
+        }
+    }
+
+    void ohmMeter()
+    {
+        if( blackLead.ohmMeter() )
+            this.text.text = "0";
+        else
+            this.text.text = "OL";
+    }
+
+    void volts()
     {
         reading bl = blackLead.getReading();
         reading rl = redLead.getReading();
@@ -47,7 +75,5 @@ public class VoltMeter : MonoBehaviour
             
 
         }
-
-
     }
 }

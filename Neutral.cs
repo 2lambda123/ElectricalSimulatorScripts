@@ -54,28 +54,31 @@ public class Neutral : MonoBehaviour
 				Debug.Log("Found: " + hitColliders.Length);
 
 				// Itterate through everything touching this object to see if anything has potential
-			for( int i = 0; i < hitColliders.Length; i++)
+			foreach(Collider c in hitColliders)
 			{
 					// Debug output
 				if( debug)
-					Debug.Log("Checking: " + hitColliders[i].gameObject);
+					Debug.Log("Checking: " + c.gameObject);
 
 					// Make sure not wasting opperations
-				if(hitColliders[i].gameObject.GetComponent<Neutral>() == null)
+				if(c.gameObject.GetComponent<Neutral>() == null)
 				{
 						// Equipment is on layer 6. This is to prevent items from trying to energize equipment
-					if(hitColliders[i].gameObject.layer != 6)
+					if(c.gameObject.layer != 6)
 					{
-						Neutral p = hitColliders[i].gameObject.AddComponent<Neutral>();
+						Neutral p = c.gameObject.AddComponent<Neutral>();
 							// Debug output
 						if( debug )
-							Debug.Log(hitColliders[i].gameObject + " does not have Potential!");
+							Debug.Log(c.gameObject + " does not have Potential!");
 					}
 				}
 
-				if(hitColliders[i].gameObject.layer != 6)
-					if(hitColliders[i].gameObject.GetComponent<Neutral>().findSource(this.gameObject))
+				if(c.gameObject.layer != 6)
+					if(c.gameObject.GetComponent<Neutral>().findSource(this.gameObject))
+					{
 						this.isTouchingSource = true;
+						break;
+					}
 
 			}
 		}else{
@@ -104,11 +107,11 @@ public class Neutral : MonoBehaviour
 
 			// Gets everythiing touching THIS item (immediate vacinity) for source
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,hitDistance);
-		for(int i = 0; i < hitColliders.Length; i++)
+		foreach(Collider c in hitColliders)
 		{
-			if( hitColliders[i].gameObject.transform != this.gameObject.transform && hitColliders[i].gameObject.transform != initiated.transform)
+			if( c.gameObject.transform != this.gameObject.transform && c.gameObject.transform != initiated.transform)
 			{
-				Neutral n = hitColliders[i].gameObject.GetComponent<Neutral>();
+				Neutral n = c.gameObject.GetComponent<Neutral>();
 				if(n != null)
 					if( n.isSource )
 						return true;
@@ -116,16 +119,14 @@ public class Neutral : MonoBehaviour
 		}
 
 			// Recursively check for the source
-		for(int i = 0; i < hitColliders.Length; i++)
+		foreach(Collider c in hitColliders)
 		{
-			if( hitColliders[i].gameObject.transform != initiated.transform && hitColliders[i].gameObject.transform != this.gameObject.transform)
+			if( c.gameObject.transform != initiated.transform && c.gameObject.transform != this.gameObject.transform)
 			{
-				Neutral on = hitColliders[i].gameObject.GetComponent<Neutral>();
+				Neutral on = c.gameObject.GetComponent<Neutral>();
 				if( on != null )
 					if( on.findSource(this.gameObject))
-					{
 						return true;
-					}
 			}
 		}
 
