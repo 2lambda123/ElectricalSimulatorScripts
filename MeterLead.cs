@@ -32,6 +32,7 @@ public class MeterLead : MonoBehaviour
                 //ohmMeter();
                 break;
             case 'r':
+                o = new Queue<GameObject>();
                 getResistanceReading(ref this.o);
                 break;
         }
@@ -111,8 +112,7 @@ public class MeterLead : MonoBehaviour
 
     void getResistanceReading(ref Queue<GameObject> q)
     {
-        bool found;
-        q = new Queue<GameObject>();
+        bool found = false;
         Queue<GameObject> path = new Queue<GameObject>();
 
         q.Enqueue(this.gameObject);
@@ -124,7 +124,9 @@ public class MeterLead : MonoBehaviour
         }
         foreach(Collider c in hitColliders)
         {
-            found = c.gameObject.GetComponent<Resistance>().getResistanceReading(q, path);
+            Resistance r = c.gameObject.GetComponent<Resistance>();
+            if( r!= null)
+                found = r.getResistanceReading(ref q, ref path);
             if(found)
                 break;
         }

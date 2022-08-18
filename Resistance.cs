@@ -102,7 +102,7 @@ public bool getResistanceReading(ref Queue<GameObject> q, ref Queue<GameObject> 
 
         foreach(Collider c in hitColliders)
         {
-            found = c.gameObject.GetComponent<Resistance>().getResistanceReading(q, path);
+            found = c.gameObject.GetComponent<Resistance>().getResistanceReading(ref q, ref path);
 			if(found)
 			{
 				path.Enqueue(this.gameObject);

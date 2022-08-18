@@ -36,6 +36,12 @@ public class VoltMeter : MonoBehaviour
                 ohmMeter();
                 //blackLead.findPosLead();
                 break;
+            case 'r':
+                blackLead.setFunction(selectedFunction);
+                redLead.setFunction(selectedFunction);
+                //ohmMeter();
+                //blackLead.findPosLead();
+                break;
         }
     }
 
