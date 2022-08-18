@@ -11,7 +11,7 @@ public class Resistance : MonoBehaviour
 
 	public int feet;
 	const float RESISTANCE_PER_THOUSAND_FEET = 1.588f;
-
+	public float totalResistance;
 
 
     // Start is called before the first frame update
@@ -80,21 +80,23 @@ public class Resistance : MonoBehaviour
 		return res;
 	}
 
-public bool getResistanceReading(ref Queue<GameObject> q, ref Queue<GameObject> path)
+	public float getReisitance()
 	{
-		bool found;
-		if( q.Contains( this.gameObject ))
-			q.Enqueue(this.gameObject);
+		return this.totalResistance;
+	}
+
+	public bool getResistanceReading(ref Queue<GameObject> q, ref Queue<GameObject> path, GameObject previous)
+	{
+
+		bool found = false;
 
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,hitDistance);
         foreach(Collider c in hitColliders)
         {
-            if( !this.gameObject.Equals(c.gameObject) )
-                q.Enqueue(c.gameObject);
-
 			if( c.gameObject.layer == 6 )
-				if( c.gameObject.name == "posLead")
+				if( c.gameObject.name == "Cylinder (3)")
 				{
+					Debug.Log("I TOUCHED THE BUTT!!!\t\t" + c.gameObject.name);
 					path.Enqueue(this.gameObject);
 					return true;
 				}
@@ -102,9 +104,15 @@ public bool getResistanceReading(ref Queue<GameObject> q, ref Queue<GameObject> 
 
         foreach(Collider c in hitColliders)
         {
-            found = c.gameObject.GetComponent<Resistance>().getResistanceReading(ref q, ref path);
+			if(c.gameObject.Equals(this.gameObject) || c.gameObject.Equals(previous))
+				continue;
+
+			Resistance r = c.gameObject.GetComponent<Resistance>();
+			if( r!= null)
+            	found = r.getResistanceReading(ref q, ref path, this.gameObject);
 			if(found)
 			{
+				Debug.Log("I TOUCHED THE BUTT!!!" );
 				path.Enqueue(this.gameObject);
 				return true;
 			}

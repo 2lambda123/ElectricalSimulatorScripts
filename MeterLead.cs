@@ -112,6 +112,9 @@ public class MeterLead : MonoBehaviour
 
     void getResistanceReading(ref Queue<GameObject> q)
     {
+        if( this.gameObject.name == "PosLead")
+            return;
+
         bool found = false;
         Queue<GameObject> path = new Queue<GameObject>();
 
@@ -124,9 +127,12 @@ public class MeterLead : MonoBehaviour
         }
         foreach(Collider c in hitColliders)
         {
+            if( c.Equals(this.gameObject) )
+                continue;
+
             Resistance r = c.gameObject.GetComponent<Resistance>();
             if( r!= null)
-                found = r.getResistanceReading(ref q, ref path);
+                found = r.getResistanceReading(ref q, ref path, this.gameObject);
             if(found)
                 break;
         }
@@ -134,10 +140,13 @@ public class MeterLead : MonoBehaviour
         if(found)
         {
             Debug.Log("GOT A FULL PATH!");
+            float totalResistance = 0.0f;
             foreach(GameObject o in path)
             {
-                Debug.Log(o);
+                Debug.Log(o.name);
+                totalResistance += o.GetComponent<Resistance>().getReisitance();
             }
+            Debug.Log("END OF PATH\tRES: " + totalResistance);
         }
         else
             Debug.Log("No path");
