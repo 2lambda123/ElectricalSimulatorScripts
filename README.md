@@ -14,4 +14,4 @@ This project was made on Unity3d version 2021.3.8f1. Everything SHOULD work if t
 My project is currently set up for Webgl so I can put demos on my website https://maulelecdemo.com.
 
 Working demos:
-  > Voltage voltage.maulelecdemo.com
+  > Voltage https://voltage.maulelecdemo.com
