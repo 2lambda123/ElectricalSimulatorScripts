@@ -4,7 +4,7 @@ using UnityEngine;
 
 using System.Text;
 
-public class Potential : MonoBehaviour
+public class Potential : MonoBehaviour //: ConductorOpperations
 {
 		// If this is a source of electrical power
 	public bool isSource;
@@ -163,7 +163,10 @@ public class Potential : MonoBehaviour
 					
 					if(c.gameObject.layer != 6)
 						if(c.gameObject.GetComponent<Potential>().findSource(this.gameObject))
+						{
 							this.isTouchingSource = true;
+							break;
+						}
 				}
 			}
 		}else{
@@ -202,11 +205,11 @@ public class Potential : MonoBehaviour
 		}
 
 			// Recursively check for the source
-		for(int i = 0; i < hitColliders.Length; i++)
+		foreach(Collider c in hitColliders)
 		{
-			if( hitColliders[i].gameObject.transform != initiated.transform && hitColliders[i].gameObject.transform != this.gameObject.transform)
+			if( c.gameObject.transform != initiated.transform && c.gameObject.transform != this.gameObject.transform)
 			{
-				Potential op = hitColliders[i].gameObject.GetComponent<Potential>();
+				Potential op = c.gameObject.GetComponent<Potential>();
 				if( op != null )
 					if( op.findSource(this.gameObject))
 					{
