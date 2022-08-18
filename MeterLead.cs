@@ -11,6 +11,8 @@ public class MeterLead : MonoBehaviour
 
     private char slectedFunction;
 
+    public Queue<GameObject> o;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,9 @@ public class MeterLead : MonoBehaviour
                 break;
             case 'o':
                 //ohmMeter();
+                break;
+            case 'r':
+                getResistanceReading(ref this.o);
                 break;
         }
     }
@@ -97,12 +102,44 @@ public class MeterLead : MonoBehaviour
                     {
                         Debug.Log("HAS CONTINUITY!!!");
                         return true;
-                        break;
                     }
                 }
             }
 
         return false;
+    }
+
+    void getResistanceReading(ref Queue<GameObject> q)
+    {
+        bool found;
+        q = new Queue<GameObject>();
+        Queue<GameObject> path = new Queue<GameObject>();
+
+        q.Enqueue(this.gameObject);
+		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.2f);
+        foreach(Collider c in hitColliders)
+        {
+            if( !this.gameObject.Equals(c.gameObject) )
+                q.Enqueue(c.gameObject);
+        }
+        foreach(Collider c in hitColliders)
+        {
+            found = c.gameObject.GetComponent<Resistance>().getResistanceReading(q, path);
+            if(found)
+                break;
+        }
+
+        if(found)
+        {
+            Debug.Log("GOT A FULL PATH!");
+            foreach(GameObject o in path)
+            {
+                Debug.Log(o);
+            }
+        }
+        else
+            Debug.Log("No path");
+        // Stack should be full here
     }
 
     public reading getReading()

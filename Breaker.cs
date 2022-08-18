@@ -6,17 +6,33 @@ public class Breaker : MonoBehaviour
 {
     public List<GameObject> children;
     public bool isLive;
+    private bool lastState;
+
+    public GameObject breakerSwitch;
+    public AudioSource breakerFlipping;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        breakerFlipping = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        toggle();
+        if(isLive != lastState)
+            toggle();
+            //breakerFlipping = GetComponent<AudioSource>();
+    }
+
+    void setbreakerOff()
+    {
+        this.breakerSwitch.transform.eulerAngles = new Vector3(0, 0, -45);
+    }
+
+    void setbreakerOn()
+    {
+        this.breakerSwitch.transform.eulerAngles = new Vector3(0, 0, 45);
     }
 
     void toggle()
@@ -35,6 +51,8 @@ public class Breaker : MonoBehaviour
                     newP.setParams(false, p.getPhase(), p.getPotential());
                 }
             }
+            setbreakerOn();
+            breakerFlipping.Play(0);
         }else
         {
             foreach(GameObject obj in children)
@@ -46,6 +64,9 @@ public class Breaker : MonoBehaviour
                     Destroy(childP);
                 }
             }
+            setbreakerOff();
+            breakerFlipping.Play(0);
         }
+        lastState = !lastState;
     }
 }

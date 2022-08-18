@@ -71,7 +71,8 @@ public class VoltMeter : MonoBehaviour
             else if( bl.getPotential() == 277 && rl.getPotential() == 277)
                 this.text.text = "480v";
             else
-                this.text.text = Mathf.Abs(rl.getPotential() - bl.getPotential()) + "v";
+                this.text.text = "?v";
+                //this.text.text = Mathf.Abs(rl.getPotential() - bl.getPotential()) + "v";
             
 
         }
