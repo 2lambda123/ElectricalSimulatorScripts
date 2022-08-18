@@ -158,6 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!114 &237625607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 237625605}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.11, y: 3.784, z: 0}
+  m_LocalPosition: {x: 5.535, y: 3.195, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -284,6 +285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!114 &257443983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!1 &1656319303
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!114 &1656319305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,7 +802,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656319303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.022, y: 3.784, z: 0}
+  m_LocalPosition: {x: 4.022, y: 3.886, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -931,6 +935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!1 &1864658150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,6 +1062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   remoteConnections: []
   feet: 0
+  totalResistance: 0
 --- !u!1001 &3298560359958840424
 PrefabInstance:
   m_ObjectHideFlags: 0

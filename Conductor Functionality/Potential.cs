@@ -33,9 +33,14 @@ public class Potential : MonoBehaviour
 	bool isRemoteConnection;
 	public List<GameObject> remoteChildren;
 
+	public List<GameObject> amperageSources;
+
 
 	void Start()
 	{
+		if(amperageSources == null)
+			amperageSources = new List<GameObject>();
+
 		setColor(this.phase);
 
 			// Checks if there is a wire link(remote connection) on this object
@@ -97,9 +102,44 @@ public class Potential : MonoBehaviour
 	}
 	
 
+	public bool addAmperage(GameObject ampObj)
+	{
+		if( !amperageSources.Contains(ampObj) )
+		{
+			amperageSources.Add(ampObj);
+			return true;
+		}
+		return false;
+	}
+
+	public bool removeAmperage(GameObject ampObj)
+	{
+		if( amperageSources.Contains(ampObj) )
+		{
+			amperageSources.Remove(ampObj);
+			return true;
+		}
+
+		// TODO: see if remove returns a bool that i can just return
+		return false;
+	}
+
+		// TODO: Develop
 	public float getAmperage()
 	{
+		float amp = 0;
 		Debug.Log("AMPERAGE NOT IMPLEMENTED!");
+		foreach(GameObject o in amperageSources)
+		{
+			// TODO: make this better
+			Lamp l = o.GetComponent<Lamp>();
+			if( l == null )
+				continue;
+			else
+			{
+				amp += l.getAmperage();
+			}
+		}
 		return 0.0f;
 	}
 
