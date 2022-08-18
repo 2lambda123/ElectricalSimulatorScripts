@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class setColorBlue : MonoBehaviour
-{
-	Material mat;
+using TMPro;
 
+public class Voltage : MonoBehaviour
+{
+
+    public TMP_Text text;
     // Start is called before the first frame update
     void Start()
     {
-		mat = this.gameObject.GetComponent<Renderer>().material;
-
-		mat.SetColor("_Color",Color.blue);     
+        this.text.text = "The simulation of a voltmeter showcases its ability to read the potential between phases, neutral, and ground.";
     }
 
     // Update is called once per frame

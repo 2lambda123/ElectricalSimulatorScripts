@@ -2,19 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+*
+*	This class adds the functionality of a neutral.
+*	Comments update: 18 Aug 22
+*
+*/
+
+
 public class Neutral : MonoBehaviour
 {
+		// A source cannot be turned off.
     public bool isSource;
 
+		// Radious of the Sphere collider detection
     int hitDistance;
+
+
     bool isTouchingSource;
     bool isRemoteConnection;
 
     public List<GameObject> children = new List<GameObject>();
 
+		// Debug output
     bool debug;
 
-    // Start is called before the first frame update
+
+
     void Start()
     {
             // Set children as neutrals
@@ -28,13 +43,6 @@ public class Neutral : MonoBehaviour
                 obj.AddComponent<Neutral>();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
 	
 
@@ -56,6 +64,10 @@ public class Neutral : MonoBehaviour
 				// Itterate through everything touching this object to see if anything has potential
 			foreach(Collider c in hitColliders)
 			{
+					// Olverlap sphere will detect self.
+				if( c.gameObject.Equals(this.gameObject))
+					continue;
+
 					// Debug output
 				if( debug)
 					Debug.Log("Checking: " + c.gameObject);
@@ -73,6 +85,7 @@ public class Neutral : MonoBehaviour
 					}
 				}
 
+					// Layer 6 is meter equipment
 				if(c.gameObject.layer != 6)
 					if(c.gameObject.GetComponent<Neutral>().findSource(this.gameObject))
 					{
@@ -109,28 +122,57 @@ public class Neutral : MonoBehaviour
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,hitDistance);
 		foreach(Collider c in hitColliders)
 		{
-			if( c.gameObject.transform != this.gameObject.transform && c.gameObject.transform != initiated.transform)
-			{
-				Neutral n = c.gameObject.GetComponent<Neutral>();
-				if(n != null)
-					if( n.isSource )
-						return true;
-			}
+				// Olverlap sphere will detect self.
+			if( c.gameObject.Equals(this.gameObject) || c.gameObject.Equals(initiated))
+				continue;
+	
+			Neutral n = c.gameObject.GetComponent<Neutral>();
+			if(n != null)
+				if( n.isSource )
+					return true;
 		}
 
 			// Recursively check for the source
 		foreach(Collider c in hitColliders)
 		{
-			if( c.gameObject.transform != initiated.transform && c.gameObject.transform != this.gameObject.transform)
-			{
-				Neutral on = c.gameObject.GetComponent<Neutral>();
-				if( on != null )
-					if( on.findSource(this.gameObject))
-						return true;
-			}
+				// Olverlap sphere will detect self.
+			if( c.gameObject.Equals(this.gameObject) || c.gameObject.Equals(initiated))
+				continue;
+
+			Neutral on = c.gameObject.GetComponent<Neutral>();
+			if( on != null )
+				if( on.findSource(this.gameObject))
+					return true;
 		}
 
 		return false;
 
+	}
+
+
+
+	// override object.Equals
+	public bool Equals(GameObject obj)
+	{
+		//
+		// See the full list of guidelines at
+		//   http://go.microsoft.com/fwlink/?LinkID=85237
+		// and also the guidance for operator== at
+		//   http://go.microsoft.com/fwlink/?LinkId=85238
+		//
+		
+		if (obj == null || GetType() != obj.GetType())
+			return false;
+
+		if( this.gameObject.name != obj.name )
+			return false;
+
+		if( this.gameObject.transform != obj.transform )
+			return false;
+
+		
+		// TODO: write your implementation of Equals() here
+		//throw new System.NotImplementedException();
+		return true;
 	}
 }

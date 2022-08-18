@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DemoScript : MonoBehaviour
+public class Demo_VOLTMETER_TESTING : MonoBehaviour
 {
     public GameObject negLead;
     public List<Transform> negPoints;

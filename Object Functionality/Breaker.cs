@@ -22,7 +22,6 @@ public class Breaker : MonoBehaviour
     {
         if(isLive != lastState)
             toggle();
-            //breakerFlipping = GetComponent<AudioSource>();
     }
 
     void setbreakerOff()
@@ -37,8 +36,6 @@ public class Breaker : MonoBehaviour
 
     void toggle()
     {
-        //this.isLive = !isLive;
-
         if(isLive)
         {
             Potential p = this.gameObject.GetComponent<Potential>();

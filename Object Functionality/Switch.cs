@@ -13,6 +13,7 @@ public class Switch : MonoBehaviour
 
     public bool isOn;
     bool lastState;
+    
     // Start is called before the first frame update
     void Start()
     {

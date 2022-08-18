@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Lamp : MonoBehaviour
 {
-    public bool isTouchingNeutral;
-    public bool isTouchingPhase;
-    public Collider[] hitColliders;
-
     public GameObject lineSide;
     public GameObject loadSide;
 
@@ -38,27 +34,5 @@ public class Lamp : MonoBehaviour
             }
         }
     }
-    private void FixedUpdate()
-	{
-        /*
-		hitColliders = Physics.OverlapSphere(transform.position,0.6f);
-        this.isTouchingPhase = false;
-        this.isTouchingNeutral = false;
-
-        foreach( Collider c in hitColliders)
-        {
-            Potential p = c.gameObject.GetComponent<Potential>();
-            Neutral n = c.gameObject.GetComponent<Neutral>();
-
-            if( p != null )
-            {
-                this.isTouchingPhase = true;
-                Debug.Log("Lamp on because of:\t\t\t" + p.gameObject);
-            }
-
-            if( n != null )
-                this.isTouchingNeutral = true;
-        }*/
-	}
 
 }
