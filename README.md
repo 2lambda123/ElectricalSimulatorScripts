@@ -1,5 +1,5 @@
 # Electrical Simulator
-![Assets](Images/Thumbnail.png)
+![Thumbnail](Images/Thumbnail.png)
 This project is to make a simple, but useful training program to be able to teach young electricians consepts about electricity in a safe way with visualizations you cannot get in the real world.
 
 ## Goals:
@@ -26,5 +26,5 @@ This project was made on Unity3d version 2021.3.8f1. Everything SHOULD work if t
 My project is currently set up for Webgl so I can put demos on my website https://maulelecdemo.com.
 
 ## Working demos
-(works natively on firefox and chrome)
+*Webgl works natively on firefox and chrome*
   - Voltage https://voltage.maulelecdemo.com
