@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+/*
+*
+*	This class adds the functionality a wire link, or remote connection.
+*	Comments update: 18 Aug 22
+*
+*/
+
+
 public class WireLink : MonoBehaviour
 {
     public List<GameObject> linkedObjects=new List<GameObject>();

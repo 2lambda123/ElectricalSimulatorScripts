@@ -4,7 +4,16 @@ using UnityEngine;
 
 using System.Text;
 
-public class Potential : MonoBehaviour //: ConductorOpperations
+
+/*
+*
+*	This class adds the functionality of potential on a conductor.
+*	Comments update: 18 Aug 22
+*
+*/
+
+
+public class Potential : MonoBehaviour 
 {
 		// If this is a source of electrical power
 	public bool isSource;
@@ -29,13 +38,10 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 	{
 		setColor(this.phase);
 
-		// TEST CODE
-			// Checks if there is a wire link on this object
+			// Checks if there is a wire link(remote connection) on this object
 		WireLink wl = this.gameObject.GetComponent<WireLink>();
 		if( wl != null )
 			wl.energizeLink(this.gameObject, this.phase, this.myPotential);
-
-		Debug.Log("HELLO WORLD!");
 	}
 
 
@@ -46,7 +52,6 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 		this.phase = phase;
 		this.myPotential = myPotential;
 		setColor(phase);
-
 	}
 
 
@@ -65,12 +70,15 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.blue);     
 				break;
 			case 'd':
+					// Brown?
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(165/255.0f,42/255.0f,42/255.0f,1));     
 				break;
 			case 'e':
+					// Yellow?
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 165/255.0f, 0));     
 				break;
 			case 'f':
+					// Orange?
 				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));      
 				break;
 		}
@@ -91,6 +99,7 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 
 	public float getAmperage()
 	{
+		Debug.Log("AMPERAGE NOT IMPLEMENTED!");
 		return 0.0f;
 	}
 
@@ -103,7 +112,6 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 
 	public void setAsInactive()
 	{
-		Debug.Log("IM INACTIVE");
 		this.isRemoteConnection = false;
 	}
 	
@@ -178,7 +186,6 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 		if(!isTouchingSource && !isRemoteConnection && !isSource)
 		{
 			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
-			Debug.Log("IM NOT HERE ANYMORE");
 			Destroy(this.gameObject.GetComponent<Potential>());
 		}
 	}
@@ -195,27 +202,27 @@ public class Potential : MonoBehaviour //: ConductorOpperations
 		Collider[] hitColliders = Physics.OverlapSphere(transform.position,hitDistance);
 		foreach(Collider c in hitColliders)
 		{
-			if( !this.gameObject.Equals(c.gameObject) && !this.gameObject.Equals(initiated))
-			{
-				Potential p = c.gameObject.GetComponent<Potential>();
-				if(p != null)
-					if( p.isSource )
-						return true;
-			}
+			if( this.gameObject.Equals(c.gameObject) || this.gameObject.Equals(initiated))
+				continue;
+
+			Potential p = c.gameObject.GetComponent<Potential>();
+			if(p != null)
+				if( p.isSource )
+					return true;
 		}
 
 			// Recursively check for the source
 		foreach(Collider c in hitColliders)
 		{
-			if( c.gameObject.transform != initiated.transform && c.gameObject.transform != this.gameObject.transform)
-			{
-				Potential op = c.gameObject.GetComponent<Potential>();
-				if( op != null )
-					if( op.findSource(this.gameObject))
-					{
-						return true;
-					}
-			}
+			if( this.gameObject.Equals(c.gameObject) || this.gameObject.Equals(initiated))
+				continue;
+
+			Potential op = c.gameObject.GetComponent<Potential>();
+			if( op != null )
+				if( op.findSource(this.gameObject))
+				{
+					return true;
+				}
 		}
 
 		return false;

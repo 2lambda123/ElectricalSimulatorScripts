@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+/*
+*
+*	This class adds the functionality of the meter tip 
+*	Comments update: 18 Aug 22
+*
+*/
+
+
 public class MeterLead : MonoBehaviour
 {
     public Transform meterTip;
@@ -11,7 +22,6 @@ public class MeterLead : MonoBehaviour
 
     private char slectedFunction;
 
-    public Queue<GameObject> o;
 
     // Start is called before the first frame update
     void Start()
@@ -19,8 +29,6 @@ public class MeterLead : MonoBehaviour
         potentialReading = new reading(' ', 0, 0);
     }
     
-
-        // Where collisoin detection is
     void FixedUpdate()
     {
         switch(slectedFunction)
@@ -32,8 +40,7 @@ public class MeterLead : MonoBehaviour
                 //ohmMeter();
                 break;
             case 'r':
-                o = new Queue<GameObject>();
-                getResistanceReading(ref this.o);
+                getResistanceReading();
                 break;
         }
     }
@@ -51,7 +58,7 @@ public class MeterLead : MonoBehaviour
             // Itterating through imediate area
         foreach(Collider c in hitColliders)
                 // Verify not checking self
-            if(c != this.gameObject.GetComponent<Collider>())
+            if( !c.gameObject.Equals(this.gameObject) )
             {
                 if(debug)
                     Debug.Log("Meter is reading something");
@@ -82,6 +89,8 @@ public class MeterLead : MonoBehaviour
     public bool ohmMeter()
     {
         bool found;
+
+            // The posative lead is what is being searched for, so this would always return true if not removed
         if( this.gameObject.name == "PosLead")
             return false;
 
@@ -90,41 +99,38 @@ public class MeterLead : MonoBehaviour
 
             // Itterating through imediate area
         foreach(Collider col in hitColliders)
+        {
                 // Verify not checking self
-            if( !this.gameObject.Equals(col.gameObject))
-            {
+            if( this.gameObject.Equals(col.gameObject))
+                continue;
                 
-                Continuity con = col.gameObject.GetComponent<Continuity>();
+            Continuity con = col.gameObject.GetComponent<Continuity>();
 
-                if(con != null)
+            if(con != null)
+            {
+                found = con.findPosLead(this.gameObject);
+                if( found )
                 {
-                    found = con.findPosLead(this.gameObject);
-                    if( found )
-                    {
+                    if(debug)
                         Debug.Log("HAS CONTINUITY!!!");
-                        return true;
-                    }
+                    return true;
                 }
             }
-
+        }
         return false;
     }
 
-    void getResistanceReading(ref Queue<GameObject> q)
+    void getResistanceReading()
     {
+            // The posative lead is what is being searched for, so this would always return true if not removed
         if( this.gameObject.name == "PosLead")
             return;
 
         bool found = false;
         Queue<GameObject> path = new Queue<GameObject>();
 
-        q.Enqueue(this.gameObject);
 		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.2f);
-        foreach(Collider c in hitColliders)
-        {
-            if( !this.gameObject.Equals(c.gameObject) )
-                q.Enqueue(c.gameObject);
-        }
+        
         foreach(Collider c in hitColliders)
         {
             if( c.Equals(this.gameObject) )
@@ -132,25 +138,28 @@ public class MeterLead : MonoBehaviour
 
             Resistance r = c.gameObject.GetComponent<Resistance>();
             if( r!= null)
-                found = r.getResistanceReading(ref q, ref path, this.gameObject);
+                found = r.getResistanceReading(ref path, this.gameObject);
             if(found)
                 break;
         }
 
         if(found)
         {
-            Debug.Log("GOT A FULL PATH!");
+            if(debug)
+                Debug.Log("GOT A FULL PATH!");
             float totalResistance = 0.0f;
             foreach(GameObject o in path)
             {
-                Debug.Log(o.name);
+                if(debug)
+                    Debug.Log(o.name);
                 totalResistance += o.GetComponent<Resistance>().getReisitance();
             }
-            Debug.Log("END OF PATH\tRES: " + totalResistance);
+            if(debug)
+                Debug.Log("END OF PATH\tRES: " + totalResistance);
         }
         else
-            Debug.Log("No path");
-        // Stack should be full here
+            if(debug)
+                Debug.Log("No path");
     }
 
     public reading getReading()
@@ -161,14 +170,7 @@ public class MeterLead : MonoBehaviour
 	// override object.Equals
 	public bool Equals(GameObject obj)
 	{
-		//
-		// See the full list of guidelines at
-		//   http://go.microsoft.com/fwlink/?LinkID=85237
-		// and also the guidance for operator== at
-		//   http://go.microsoft.com/fwlink/?LinkId=85238
-		//
-		
-		if (obj == null || GetType() != obj.GetType())
+        if (obj == null || GetType() != obj.GetType())
 			return false;
 
 		if( this.gameObject.name != obj.name )
@@ -177,8 +179,6 @@ public class MeterLead : MonoBehaviour
 		if( this.gameObject.transform != obj.transform )
 			return false;
 
-		
-		// TODO: write your implementation of Equals() here
 		//throw new System.NotImplementedException();
 		return true;
 	}

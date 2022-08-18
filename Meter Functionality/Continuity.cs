@@ -2,24 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+/*
+*
+*	This class adds the functionality of continuity between conductors
+*	Comments update: 18 Aug 22
+*
+*/
+
+
 public class Continuity : MonoBehaviour
 {
     public List<GameObject> remoteConnections;
     bool debug;
     float hitDistance = 0.6f;
+
+		// Depricated??
     bool isTouchingPosLead;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void FixedUpdate()
 	{
@@ -36,6 +39,9 @@ public class Continuity : MonoBehaviour
 				// Itterate through everything touching this object to see if anything has potential
 			foreach(Collider c in hitColliders)
 			{
+				if( c.gameObject.Equals(this.gameObject ))
+					continue;
+
 					// Debug output
 				if( debug)
 					Debug.Log("Checking: " + c.gameObject);
@@ -46,6 +52,7 @@ public class Continuity : MonoBehaviour
 					{
                         if( c.gameObject.name == "PosLead" )
                         {
+							// Depricated??
                             this.isTouchingPosLead = true;
 						    break;
                         }
@@ -54,6 +61,7 @@ public class Continuity : MonoBehaviour
 			}
 		}else{
 				// This is to make sure something doesn't stay energized when it doesn't need to be
+				// Depricated??
 			this.isTouchingPosLead = false;
 		}
     }
@@ -90,13 +98,6 @@ public class Continuity : MonoBehaviour
 	// override object.Equals
 	public bool Equals(GameObject obj)
 	{
-		//
-		// See the full list of guidelines at
-		//   http://go.microsoft.com/fwlink/?LinkID=85237
-		// and also the guidance for operator== at
-		//   http://go.microsoft.com/fwlink/?LinkId=85238
-		//
-		
 		if (obj == null || GetType() != obj.GetType())
 			return false;
 
@@ -106,8 +107,6 @@ public class Continuity : MonoBehaviour
 		if( this.gameObject.transform != obj.transform )
 			return false;
 
-		
-		// TODO: write your implementation of Equals() here
 		//throw new System.NotImplementedException();
 		return true;
 	}
