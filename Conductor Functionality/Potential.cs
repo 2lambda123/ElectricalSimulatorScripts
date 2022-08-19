@@ -283,6 +283,16 @@ public class Potential : MonoBehaviour
 		return str.ToString();
 	}
 
+	public bool checkIfIsSource()
+	{
+		return this.isSource;
+	}
+
+	public void getAmperagePath()
+	{
+		
+	}
+
 	// override object.Equals
 	public bool Equals(GameObject obj)
 	{
