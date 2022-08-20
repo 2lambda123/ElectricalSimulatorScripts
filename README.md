@@ -8,6 +8,7 @@ This project is to make a simple, but useful training program to be able to teac
   * Implement VR so the user can be immersed and because that's cool af
   * Record some voice overs that explain exactly what is going on
   * Implement troubleshooting. Something the user can interact with ie open boxes, connect wires with wirenuts, find faults
+  * Injury system with an avatar? Show the effects a blast can do it a body ie arc burns or adc blasts
 
  
  ## Assets implemented
