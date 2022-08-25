@@ -62,7 +62,14 @@ public class Potential : MonoBehaviour
 
 	private void setColor(char phase)
 	{
-		
+		Renderer r = this.gameObject.GetComponent<Renderer>();
+		if( r == null )
+			return;
+
+
+		if( this.gameObject.name == "Breaker")
+			return;
+
 		switch (phase)
 		{
 			case 'a':
@@ -225,7 +232,9 @@ public class Potential : MonoBehaviour
 			// Last call in function. Destroyes potential if not there
 		if(!isTouchingSource && !isRemoteConnection && !isSource)
 		{
-			this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+			Renderer r = this.gameObject.GetComponent<Renderer>();
+			if( r != null )
+				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
 			Destroy(this.gameObject.GetComponent<Potential>());
 		}
 	}

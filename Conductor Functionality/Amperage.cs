@@ -20,6 +20,8 @@ public class Amperage : MonoBehaviour
 
 	public int feet;
 	public float totalAmperage;
+	
+	public List<GameObject> amperageSources;
 
 /* I don't thin i need this here
     void FixedUpdate()
@@ -58,9 +60,23 @@ public class Amperage : MonoBehaviour
 		}
     } */
 
+	void Update()
+	{
+		this.totalAmperage = 0;
+
+		foreach(GameObject o in amperageSources)
+		{
+			this.totalAmperage += o.GetComponent<AmperageSource>().getAmperage();
+		}
+	}
+
 	public void setAmperage(float amperage)
 	{
 		this.totalAmperage = amperage;
+	}
+	public void addAmperageSource(GameObject source)
+	{
+		this.amperageSources.Add(source);
 	}
 
 		// Depricated??
@@ -79,6 +95,13 @@ public class Amperage : MonoBehaviour
 		return 0.0f;
 	}
 
+	public void addRemoteConnection(GameObject connection)
+	{
+		if(this.remoteConnections.Contains(connection))
+			return;
+
+		this.remoteConnections.Add(connection);
+	}
 	
 	public float getReisitance()
 	{

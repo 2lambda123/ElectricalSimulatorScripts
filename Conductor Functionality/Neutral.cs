@@ -30,7 +30,7 @@ public class Neutral : MonoBehaviour
 
 
 
-    void Start()
+    void Update()
     {
             // Set children as neutrals
         foreach(GameObject obj in children)
