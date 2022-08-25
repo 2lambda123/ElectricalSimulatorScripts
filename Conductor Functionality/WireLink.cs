@@ -29,7 +29,7 @@ public class WireLink : MonoBehaviour
             if(wl == null)
             {
                 obj.AddComponent<WireLink>();
-                obj.GetComponent<WireLink>().addObjectToList(this.gameObject);
+                //bj.GetComponent<WireLink>().addObjectToList(this.gameObject);
             }
         }
     }
@@ -45,7 +45,7 @@ public class WireLink : MonoBehaviour
                 Potential subP = obj.GetComponent<Potential>();
                 if( subP != null)
                 {
-                    Debug.Log("Inactive");
+                    Debug.Log(this.gameObject + ": Inactive");
                     subP.setAsInactive();
                 }
             }
@@ -71,14 +71,14 @@ public class WireLink : MonoBehaviour
                 Potential np = obj.AddComponent<Potential>();
                 np.setParams(false, phase, potential);
                 np.setAsRemoteConnection();
-                return true;
+                //return true;
             }
             else
             {
                 if(p.getPhase() != phase)
                 {
                     Debug.Log("TWO DIFFERENT PHASES TOUCHED. BIG BOOM!");
-                    return false;
+                    //return false;
                 }
             }
         }

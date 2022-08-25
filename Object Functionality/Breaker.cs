@@ -11,6 +11,9 @@ public class Breaker : MonoBehaviour
     public GameObject breakerSwitch;
     public AudioSource breakerFlipping;
 
+    public Transform onTransform;
+    public Transform offTransform;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,12 +29,19 @@ public class Breaker : MonoBehaviour
 
     void setbreakerOff()
     {
-        this.breakerSwitch.transform.eulerAngles = new Vector3(0, 0, -45);
+        this.breakerSwitch.transform.position = offTransform.position; // .eulerAngles = new Vector3( 90, -20, 0 ); //this.breakerSwitch.transform.rotation.x, this.breakerSwitch.transform.rotation.y , this.breakerSwitch.transform.rotation.z );
+        this.breakerSwitch.transform.rotation = offTransform.rotation; // .eulerAngles = new Vector3( 90, -20, 0 ); //this.breakerSwitch.transform.rotation.x, this.breakerSwitch.transform.rotation.y , this.breakerSwitch.transform.rotation.z );
     }
 
     void setbreakerOn()
     {
-        this.breakerSwitch.transform.eulerAngles = new Vector3(0, 0, 45);
+        this.breakerSwitch.transform.position = onTransform.position; //eulerAngles = new Vector3( 90, 20, 0 ); //this.breakerSwitch.transform.rotation.x, this.breakerSwitch.transform.rotation.y, this.breakerSwitch.transform.rotation.z );
+        this.breakerSwitch.transform.rotation = onTransform.rotation;
+    }
+
+    void OnMouseDown()
+    {
+        isLive = !isLive;
     }
 
     void toggle()
@@ -45,7 +55,8 @@ public class Breaker : MonoBehaviour
                 if( childP == null )
                 {
                     Potential newP = obj.AddComponent<Potential>();
-                    newP.setParams(false, p.getPhase(), p.getPotential());
+                    newP.setParams(true, p.getPhase(), p.getPotential());
+                    newP.setAsRemoteConnection();
                 }
             }
             setbreakerOn();

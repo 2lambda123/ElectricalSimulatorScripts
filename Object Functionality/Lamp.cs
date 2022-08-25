@@ -6,8 +6,9 @@ public class Lamp : MonoBehaviour
 {
     public GameObject lineSide;
     public GameObject loadSide;
+    public GameObject lampShader;
 
-    bool isOn;
+    public bool isOn;
 
     public float amperage;
     // Start is called before the first frame update
@@ -26,22 +27,17 @@ public class Lamp : MonoBehaviour
         Neutral n = loadSide.GetComponent<Neutral>();
 
         if( p == null || n == null)
+        {
+            isOn = false;
+			lampShader.GetComponent<Renderer>().material.SetColor("_Color",Color.white);      
             return;
+        }else 
+        {
+                // Yellow\
+            lampShader.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));      
+            this.isOn = true;
             
-
-            if( !this.isOn )
-            {
-                    // Yellow
-				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",new Color(255/255.0f, 255/255.0f, 0));      
-                this.isOn = true;
-                
-            }else
-        //}else{
-            if( this.isOn )
-            {
-				this.gameObject.GetComponent<Renderer>().material.SetColor("_Color",Color.white);      
-                this.isOn = false;
-            }
+        }
         
     }
 
