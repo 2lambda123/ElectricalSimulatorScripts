@@ -28,3 +28,4 @@ My project is currently set up for Webgl so I can put demos on my website https:
 ## Working demos
 *Webgl works natively on firefox and chrome*
   - Voltage https://voltage.maulelecdemo.com
+  - Simple Circuit https://circuit.maulelecdemo.com

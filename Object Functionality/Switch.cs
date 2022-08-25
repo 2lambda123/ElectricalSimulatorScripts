@@ -24,7 +24,7 @@ public class Switch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        switchFlipping = gameObject.GetComponent<AudioSource>();
+        //switchFlipping = gameObject.GetComponent<AudioSource>();
         isOn = true;
     }
 
@@ -53,7 +53,7 @@ public class Switch : MonoBehaviour
             if(loadSideHot && !lineSideHot)
                 deenergizeLoad();
             
-                
+            makeConnections();
         }else{
             if(pOut)
                 pOut.setAsInactive();
@@ -73,7 +73,7 @@ public class Switch : MonoBehaviour
             }
 
             lastState = isOn;
-            switchFlipping.Play(0);
+            //switchFlipping.Play(0);
         }
     }
 
@@ -112,7 +112,7 @@ public class Switch : MonoBehaviour
                 this.switchLever.transform.eulerAngles = new Vector3(this.switchLever.transform.rotation.x-45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
             }
 
-            switchFlipping.Play(0);
+            //switchFlipping.Play(0);
             lastState = !lastState;
             return;
         }
@@ -160,6 +160,20 @@ public class Switch : MonoBehaviour
         }
         lastState = isOn;
             switchFlipping.Play(0);
+    }
+
+    private void makeConnections()
+    {
+        Amperage aIn = lineSide.GetComponent<Amperage>();
+        Amperage aOut = lineSide.GetComponent<Amperage>();
+
+        if( aIn != null )
+            if( aOut != null )
+            {
+                aIn.addRemoteConnection(loadSide);
+                aOut.addRemoteConnection(lineSide);
+            }
+
     }
 
 }

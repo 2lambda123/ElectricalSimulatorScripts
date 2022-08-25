@@ -11,6 +11,8 @@ public class Lamp : MonoBehaviour
     public bool isOn;
 
     public float amperage;
+
+    public bool amperageSearch;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,10 +41,35 @@ public class Lamp : MonoBehaviour
             
         }
         
+        if(this.amperageSearch)
+            getAmperage();
     }
 
     public float getAmperage()
     {
+        Debug.Log("Amperage reading followed:");
+        Amperage a = lineSide.GetComponent<Amperage>();
+        if(a == null)
+        {
+            Debug.Log("Line side has no amperage!");
+            if( lineSide.GetComponent<Potential>() != null )
+                a = lineSide.AddComponent<Amperage>();
+        }
+
+        Queue<GameObject> path = new Queue<GameObject>();
+        a.getAmperagePath( ref path, this.gameObject );
+
+        foreach(GameObject o in path)
+        {
+            Amperage a2 = o.GetComponent<Amperage>();
+            if( a2 == null )
+                a2 = o.AddComponent<Amperage>();
+
+            a2.addAmperageSource(this.gameObject);
+        }
+
+        this.amperageSearch = false;
+        Debug.Log("Total amperage: " + this.amperage);
         return this.amperage;
     }
 
