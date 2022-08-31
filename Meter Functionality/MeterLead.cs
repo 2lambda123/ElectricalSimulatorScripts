@@ -18,7 +18,7 @@ public class MeterLead : MonoBehaviour
     public Transform meterTip;
     public reading potentialReading;
 
-    private bool debug;
+    public bool debug;
 
     private char slectedFunction;
 
@@ -27,7 +27,7 @@ public class MeterLead : MonoBehaviour
     void Start()
     {
         potentialReading = new reading(' ', 0, 0);
-    }
+    }private
     
     void FixedUpdate()
     {
@@ -53,7 +53,13 @@ public class MeterLead : MonoBehaviour
     void voltMeter()
     {
             // Collision detection
-		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.2f);
+		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.1f);
+
+        if( hitColliders.Length < 1 )
+        {
+            this.potentialReading = new reading(' ',0,0);
+            return;
+        }
 
             // Itterating through imediate area
         foreach(Collider c in hitColliders)
