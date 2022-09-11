@@ -29,11 +29,10 @@ public class Breaker : MonoBehaviour
 
         foreach(GameObject o in children)
         {
-            if( o.GetComponent<Potential>() == null )
+            if( o.GetComponent<SubPotential>() == null )
             {
-                Potential p = o.AddComponent<Potential>();
-                p.setParams(false, mypotential.getPhase(), mypotential.getPotential());
-                p.setAsRemoteConnection();
+                o.AddComponent<SubPotential>().setPotential(this.mypotential, this.gameObject);
+                o.GetComponent<SubPotential>().setAsSource();
             }
         }
     }
@@ -62,41 +61,45 @@ public class Breaker : MonoBehaviour
         isLive = !isLive;
     }
 
+    public Potential getPotential()
+    {
+        return this.mypotential;
+    }
+
     void toggle()
     {
         if(isLive)
         {
-            Potential p = this.gameObject.GetComponent<Potential>();
-            if(p != null)
-                foreach(GameObject obj in children)
+            foreach(GameObject obj in children)
+            {
+                if( obj.GetComponent<SubPotential>() == null)
                 {
-                    Potential childP = obj.GetComponent<Potential>();
-                    if( childP == null )
-                    {
-                        Potential newP = obj.AddComponent<Potential>();
-                        newP.setParams(true, p.getPhase(), p.getPotential());
-                        newP.setAsRemoteConnection();
-                    }
+                    SubPotential sp = obj.AddComponent<SubPotential>();
+                    sp.setPotential(this.getPotential(), this.gameObject);
+                    sp.setAsSource();
                 }
-            else
-                Debug.Log("POTENTIAL IS NULL");
+                // Conductor c = obj.GetComponent<Conductor>();
+                // if( c != null )
+                // {
+                //     c.setPotential(this.mypotential);
+                // }
+            }
+            
             setbreakerOn();
             //breakerFlipping.Play(0);
         }else
         {
             foreach(GameObject obj in children)
             {
-                if(obj == this.gameObject)
-                    continue;
-                    
-                Potential childP = obj.GetComponent<Potential>();
-                if( childP != null )
+                if( obj.GetComponent<SubPotential>() != null)
                 {
-                    Renderer r = obj.GetComponent<Renderer>();
-                    if( r!= null )
-                        r.material.SetColor("_Color", Color.white);
-                    Destroy(childP);
+                    obj.GetComponent<SubPotential>().removeSelf();
                 }
+                // Conductor c = obj.GetComponent<Conductor>();
+                // if( c != null )
+                // {
+                //     c.turnOff();
+                // }
             }
             setbreakerOff();
             //breakerFlipping.Play(0);

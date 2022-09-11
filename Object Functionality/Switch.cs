@@ -31,8 +31,8 @@ public class Switch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Potential pIn = lineSide.GetComponent<Potential>();
-        Potential pOut = loadSide.GetComponent<Potential>();
+        SubPotential pIn = lineSide.GetComponent<SubPotential>();
+        SubPotential pOut = loadSide.GetComponent<SubPotential>();
 
             // Line side checks
         if( pIn == null )
@@ -54,10 +54,11 @@ public class Switch : MonoBehaviour
                 deenergizeLoad();
             
             makeConnections();
-        }else{
-            if(pOut)
-                pOut.setAsInactive();
         }
+        // else{
+        //     if(pOut)
+        //         pOut.setAsInactive();
+        // }
 
         if( isOn != lastState )
         {
@@ -83,17 +84,16 @@ public class Switch : MonoBehaviour
         isOn = !isOn;
     }
 
-    void energizeLoad(Potential pIn)
+    void energizeLoad(SubPotential pIn)
     {
-        Potential p = loadSide.AddComponent<Potential>();
-        p.setParams(false, pIn.getPhase(), pIn.getPotential());
-        p.addChild(lineSide);
-        p.setAsRemoteConnection();
+        SubPotential sp = loadSide.AddComponent<SubPotential>();
+        sp.setPotential(pIn.GetPotential(), this.gameObject);
+        sp.setAsSource();
     }
 
     void deenergizeLoad()
     {
-        loadSide.GetComponent<Potential>().setAsInactive();
+        Destroy(loadSide.GetComponent<SubPotential>());
     }
 
     void switchFunction()
@@ -121,45 +121,45 @@ public class Switch : MonoBehaviour
         Neutral n = lineSide.GetComponent<Neutral>();
 
 
-        if( isOn )
-        {
-            if( p != null )
-            {
-                if( loadSide.GetComponent<Potential>() == null)
-                {
-                    Potential p2 = loadSide.AddComponent<Potential>();
-                    p2.setParams(false, p.getPhase(), p.getPotential());
-                    p2.addChild(lineSide);
-                    p2.setAsRemoteConnection();
-                }else
-                {
-                    Debug.Log("Load side is already hot!");
-                }
-            }/*else{
+    //     if( isOn )
+    //     {
+    //         if( p != null )
+    //         {
+    //             if( loadSide.GetComponent<Potential>() == null)
+    //             {
+    //                 Potential p2 = loadSide.AddComponent<Potential>();
+    //                 p2.setParams(false, p.getPhase(), p.getPotential());
+    //                 p2.addChild(lineSide);
+    //                 p2.setAsRemoteConnection();
+    //             }else
+    //             {
+    //                 Debug.Log("Load side is already hot!");
+    //             }
+    //         }/*else{
 
-                Potential p2 = loadSide.GetComponent<Potential>();
-                p2.removeChild(lineSide);
-                Destroy( p2);
-            }*/
+    //             Potential p2 = loadSide.GetComponent<Potential>();
+    //             p2.removeChild(lineSide);
+    //             Destroy( p2);
+    //         }*/
 
-            //this.switchLever.transform.eulerAngles = new Vector3(0, 0, 45);
-        }
-        else
-        {
-            //this.switchLever.transform.eulerAngles = new Vector3(0, 0, -45);
-            Potential p2 = loadSide.GetComponent<Potential>();
-            if(p2 != null)
-            {
-                Debug.Log("IM SPAZZING!");
-                p2.setAsInactive();
-                //Destroy(p2);
-            }
-            // TODO: Add a way for items to check back for source
-            //loadSide.AddComponent<Neutral>();
+    //         //this.switchLever.transform.eulerAngles = new Vector3(0, 0, 45);
+    //     }
+    //     else
+    //     {
+    //         //this.switchLever.transform.eulerAngles = new Vector3(0, 0, -45);
+    //         Potential p2 = loadSide.GetComponent<Potential>();
+    //         if(p2 != null)
+    //         {
+    //             Debug.Log("IM SPAZZING!");
+    //             p2.setAsInactive();
+    //             //Destroy(p2);
+    //         }
+    //         // TODO: Add a way for items to check back for source
+    //         //loadSide.AddComponent<Neutral>();
             
-        }
-        lastState = isOn;
-            switchFlipping.Play(0);
+    //     }
+    //     lastState = isOn;
+    //         switchFlipping.Play(0);
     }
 
     private void makeConnections()

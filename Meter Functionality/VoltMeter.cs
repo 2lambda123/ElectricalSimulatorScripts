@@ -6,7 +6,6 @@ using TMPro;
 
 public class VoltMeter : MonoBehaviour
 {
-    public GameObject meterBody;
     public MeterLead blackLead;
     public MeterLead redLead;
 
