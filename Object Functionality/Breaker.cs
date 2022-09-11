@@ -34,15 +34,6 @@ public class Breaker : MonoBehaviour
                 o.AddComponent<SubPotential>().setPotential(this.mypotential, this.gameObject);
                 o.GetComponent<SubPotential>().setAsSource();
             }
-            // if( o.GetComponent<Conductor>() != null )
-            // {
-            //     // Potential p = o.AddComponent<Potential>();
-            //     // p.setParams(false, mypotential.getPhase(), mypotential.getPotential());
-            //     // p.setAsRemoteConnection();
-                
-            //     o.GetComponent<Conductor>().setPotential(mypotential);
-            //     o.GetComponent<Conductor>().setAsRemoteConnection(true);
-            // }
         }
     }
 
@@ -79,31 +70,24 @@ public class Breaker : MonoBehaviour
     {
         if(isLive)
         {
-            //Potential p = this.gameObject.GetComponent<Potential>();
-            //if(p != null)
             foreach(GameObject obj in children)
             {
-                //Potential childP = obj.GetComponent<Potential>();
                 Conductor c = obj.GetComponent<Conductor>();
                 if( c != null )
                 {
                     c.setPotential(this.mypotential);
-                    //c.setAsRemoteConnection(true);
                 }
             }
-            // else
-            //     Debug.Log("POTENTIAL IS NULL");
+            
             setbreakerOn();
             //breakerFlipping.Play(0);
         }else
         {
             foreach(GameObject obj in children)
             {
-                //Potential childP = obj.GetComponent<Potential>();
                 Conductor c = obj.GetComponent<Conductor>();
                 if( c != null )
                 {
-                    //c.setAsRemoteConnection(false);
                     c.turnOff();
                 }
             }

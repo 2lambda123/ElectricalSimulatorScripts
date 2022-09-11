@@ -31,8 +31,8 @@ public class Switch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Potential pIn = lineSide.GetComponent<Potential>();
-        Potential pOut = loadSide.GetComponent<Potential>();
+        SubPotential pIn = lineSide.GetComponent<SubPotential>();
+        SubPotential pOut = loadSide.GetComponent<SubPotential>();
 
             // Line side checks
         if( pIn == null )
@@ -83,17 +83,16 @@ public class Switch : MonoBehaviour
         isOn = !isOn;
     }
 
-    void energizeLoad(Potential pIn)
+    void energizeLoad(SubPotential pIn)
     {
-        Potential p = loadSide.AddComponent<Potential>();
-        p.setParams(false, pIn.getPhase(), pIn.getPotential());
-        p.addChild(lineSide);
-        p.setAsRemoteConnection();
+        SubPotential sp = loadSide.AddComponent<SubPotential>();
+        sp.setPotential(pIn.GetPotential());
+        sp.setAsSource();
     }
 
     void deenergizeLoad()
     {
-        loadSide.GetComponent<Potential>().setAsInactive();
+        Destroy(loadSide.GetComponent<SubPotential>());
     }
 
     void switchFunction()

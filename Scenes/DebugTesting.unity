@@ -501,7 +501,6 @@ GameObject:
   - component: {fileID: 203138913}
   - component: {fileID: 203138912}
   - component: {fileID: 203138911}
-  - component: {fileID: 203138910}
   - component: {fileID: 203138909}
   - component: {fileID: 203138908}
   - component: {fileID: 203138907}
@@ -558,19 +557,6 @@ MonoBehaviour:
   - {fileID: 1224322494}
   - {fileID: 1543481787}
   time: 5
---- !u!114 &203138910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 203138906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 1489931964}
 --- !u!135 &203138911
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -692,7 +678,6 @@ GameObject:
   - component: {fileID: 353155645}
   - component: {fileID: 353155644}
   - component: {fileID: 353155643}
-  - component: {fileID: 353155642}
   - component: {fileID: 353155641}
   m_Layer: 7
   m_Name: WireB
@@ -714,19 +699,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsTouching: []
-  parent: {fileID: 1489931964}
---- !u!114 &353155642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353155640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   parent: {fileID: 1489931964}
 --- !u!135 &353155643
 SphereCollider:
@@ -1403,7 +1375,6 @@ GameObject:
   - component: {fileID: 716223214}
   - component: {fileID: 716223213}
   - component: {fileID: 716223212}
-  - component: {fileID: 716223211}
   - component: {fileID: 716223210}
   m_Layer: 7
   m_Name: WireB
@@ -1425,19 +1396,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsTouching: []
-  parent: {fileID: 172713822}
---- !u!114 &716223211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716223209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   parent: {fileID: 172713822}
 --- !u!135 &716223212
 SphereCollider:
@@ -2932,7 +2890,6 @@ GameObject:
   - component: {fileID: 1454196625}
   - component: {fileID: 1454196624}
   - component: {fileID: 1454196623}
-  - component: {fileID: 1454196622}
   - component: {fileID: 1454196627}
   m_Layer: 7
   m_Name: WireB
@@ -2941,19 +2898,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1454196622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454196621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 132267943}
 --- !u!135 &1454196623
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3500,7 +3444,6 @@ GameObject:
   - component: {fileID: 1564310277}
   - component: {fileID: 1564310276}
   - component: {fileID: 1564310275}
-  - component: {fileID: 1564310274}
   - component: {fileID: 1564310273}
   - component: {fileID: 1564310272}
   - component: {fileID: 1564310271}
@@ -3557,19 +3500,6 @@ MonoBehaviour:
   - {fileID: 2134972262}
   - {fileID: 88661581}
   time: 2.75
---- !u!114 &1564310274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564310270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 172713822}
 --- !u!135 &1564310275
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4186,7 +4116,6 @@ GameObject:
   - component: {fileID: 1811468320}
   - component: {fileID: 1811468319}
   - component: {fileID: 1811468318}
-  - component: {fileID: 1811468317}
   - component: {fileID: 1811468322}
   - component: {fileID: 1811468323}
   - component: {fileID: 1811468324}
@@ -4197,19 +4126,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1811468317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1811468316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3274acc919d2461198b763d8ee5c4480, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parent: {fileID: 132267943}
 --- !u!135 &1811468318
 SphereCollider:
   m_ObjectHideFlags: 0
