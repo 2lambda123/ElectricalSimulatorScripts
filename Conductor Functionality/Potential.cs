@@ -96,6 +96,31 @@ public class Potential : MonoBehaviour
 		}
 	}
 
+	public Color getColor()
+	{
+
+		switch (phase)
+		{
+			case 'a':
+				return Color.black;
+			case 'b':
+				return Color.red;
+			case 'c':
+				return Color.blue;
+			case 'd':
+					// Brown?
+				return  new Color(165/255.0f,42/255.0f,42/255.0f,1);
+			case 'e':
+					// Yellow?
+				return new Color(255/255.0f, 165/255.0f, 0);
+			case 'f':
+					// Orange?
+				return new Color(255/255.0f, 255/255.0f, 0);
+		}
+
+		return Color.white;
+	}
+
 		// Getters 
 	public char getPhase()
 	{

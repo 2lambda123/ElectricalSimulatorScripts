@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 3817267898247282715}
   - component: {fileID: 1415091209702609120}
   - component: {fileID: 6259276905274028342}
-  - component: {fileID: 2435894584017715454}
   m_Layer: 6
   m_Name: Meter Lead Tip
   m_TagString: Untagged
@@ -115,20 +114,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &2435894584017715454
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5641965135971292687}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &6082224311391147657
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,6 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meterTip: {fileID: 8897273965222074106}
+  debug: 0
 --- !u!65 &343595061964886712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -356,5 +342,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.12, y: 1.44, z: 1}
+  m_Size: {x: 0.12, y: 1.44, z: 0.08}
   m_Center: {x: -0.23, y: -0.15, z: 0}

@@ -20,7 +20,8 @@ public class MeterLead : MonoBehaviour
 
     public bool debug;
 
-    private char slectedFunction;
+    [SerializeField]
+    private int slectedFunction;
 
 
     // Start is called before the first frame update
@@ -31,21 +32,21 @@ public class MeterLead : MonoBehaviour
     
     void FixedUpdate()
     {
-        switch(slectedFunction)
+        switch( slectedFunction )
         {
-            case 'v':
+            case 0:
                 voltMeter();
                 break;
-            case 'o':
+            case 1:
                 //ohmMeter();
                 break;
-            case 'r':
+            case 2:
                 getResistanceReading();
                 break;
         }
     }
 
-    public void setFunction(char newFunction)
+    public void setFunction(int newFunction)
     {
         this.slectedFunction = newFunction;
     }
@@ -88,7 +89,7 @@ public class MeterLead : MonoBehaviour
                 else
                     this.potentialReading = new reading(' ',0,0);
             }else{
-                    this.potentialReading = new reading(' ',0,0);
+                this.potentialReading = new reading(' ',0,0);
             }
     }
 

@@ -5,20 +5,20 @@ using UnityEngine;
 public class simpleMovement : MonoBehaviour
 {
     public GameObject [] children;
+    public float time = 2.5f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(ExampleCoroutine());
     }
 
-    // Update is called once per frame
-    void Update()
+     IEnumerator ExampleCoroutine()
     {
-        for(int i = 0; i < children.Length; i++)
+        foreach(GameObject o in children)
         {
-            Rigidbody rb = children[i].GetComponents<Rigidbody>()[0];
-
-            rb.velocity = new Vector3(0,1,0);
+            this.gameObject.transform.position = o.transform.position;
+            yield return new WaitForSeconds(time);
         }
+        StartCoroutine(ExampleCoroutine());
     }
 }
