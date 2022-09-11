@@ -190,7 +190,7 @@ public class Conductor : MonoBehaviour
                 return p;
 		}
 
-		foreach(GameObject obj in aList)
+		foreach(GameObject obj in bList)
 		{
 			SubPotential sp = obj.GetComponent<SubPotential>();
             if( sp == null )

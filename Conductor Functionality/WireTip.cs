@@ -42,7 +42,7 @@ public class WireTip : MonoBehaviour
 	void OnTriggerEnter(Collider c)
 	{
 		
-		if(c.gameObject.layer != 7 && c.gameObject.layer != 8 )
+		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
 			return;
 
 		if(c.gameObject.GetComponent<SubPotential>() != null)
@@ -56,7 +56,7 @@ public class WireTip : MonoBehaviour
 		if(c.gameObject == null )
 			return;
 
-		if(c.gameObject.layer != 7 && c.gameObject.layer != 8)
+		if(c.gameObject.layer < 7 || c.gameObject.layer > 8)
 			return;
 
 		if(c.gameObject.GetComponent<SubPotential>() == null)
@@ -69,7 +69,7 @@ public class WireTip : MonoBehaviour
 
 	void OnTriggerExit(Collider c)
 	{
-		if(c.gameObject.layer != 7 && c.gameObject.layer != 8)
+		if(c.gameObject.layer < 7 || c.gameObject.layer > 8)
 			return;
 
 		// if(c.gameObject.GetComponent<SubPotential>() == null)
