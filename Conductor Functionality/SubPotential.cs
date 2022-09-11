@@ -12,9 +12,12 @@ public class SubPotential : MonoBehaviour
     private bool isRemoteConnection;
     private bool isTouchingSource;
     private float hitDistance = 0.5f;
+
+	public Potential potential;
     
     public void setPotential(Potential p, GameObject parent)
     {
+		this.potential = p;
         this.phase = p.getPhase();
         this.myPotential = p.getPotential();
         this.parent = parent;
@@ -38,7 +41,7 @@ public class SubPotential : MonoBehaviour
 
 	public Potential GetPotential()
 	{
-		return this.myPotential;
+		return this.potential;
 	}
 
 	public void setAsSource()

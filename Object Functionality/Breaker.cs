@@ -72,11 +72,17 @@ public class Breaker : MonoBehaviour
         {
             foreach(GameObject obj in children)
             {
-                Conductor c = obj.GetComponent<Conductor>();
-                if( c != null )
+                if( obj.GetComponent<SubPotential>() == null)
                 {
-                    c.setPotential(this.mypotential);
+                    SubPotential sp = obj.AddComponent<SubPotential>();
+                    sp.setPotential(this.getPotential(), this.gameObject);
+                    sp.setAsSource();
                 }
+                // Conductor c = obj.GetComponent<Conductor>();
+                // if( c != null )
+                // {
+                //     c.setPotential(this.mypotential);
+                // }
             }
             
             setbreakerOn();
@@ -85,11 +91,15 @@ public class Breaker : MonoBehaviour
         {
             foreach(GameObject obj in children)
             {
-                Conductor c = obj.GetComponent<Conductor>();
-                if( c != null )
+                if( obj.GetComponent<SubPotential>() != null)
                 {
-                    c.turnOff();
+                    obj.GetComponent<SubPotential>().removeSelf();
                 }
+                // Conductor c = obj.GetComponent<Conductor>();
+                // if( c != null )
+                // {
+                //     c.turnOff();
+                // }
             }
             setbreakerOff();
             //breakerFlipping.Play(0);

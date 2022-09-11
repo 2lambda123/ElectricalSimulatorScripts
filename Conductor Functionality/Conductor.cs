@@ -65,12 +65,12 @@ public class Conductor : MonoBehaviour
         if(!ts)
         {
             turnOff();
-            Debug.Log(gameObject.name + " did NOT FoundSource");
+            // Debug.Log(gameObject.name + " did NOT FoundSource");
         }
         else
         {
             setPotential(ts);
-            Debug.Log(gameObject.name + " FoundSource!");
+            // Debug.Log(gameObject.name + " FoundSource!");
         }
 
             // Draw a visual to signify wire
