@@ -29,6 +29,10 @@ public class SubPotential : MonoBehaviour
 		if( bkr != null )
 			return bkr.getPotential();
 
+		Switch sw = this.parent.GetComponent<Switch>();
+		if( sw != null )
+			return sw.getLinePotential();
+
         Conductor pc = this.parent.GetComponent<Conductor>();
         if( pc == null )
         {
