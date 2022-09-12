@@ -50,8 +50,8 @@ public class WireTip : MonoBehaviour
 		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
 			return;
 
-		if(c.gameObject.GetComponent<SubPotential>() == null)
-			return;
+		// if(c.gameObject.GetComponent<SubPotential>() == null)
+		// 	return;
 
 		objectsTouching.Add(c.gameObject);
 	}
@@ -61,8 +61,12 @@ public class WireTip : MonoBehaviour
 		if(c.gameObject == null )
 			return;
 
-		if(c.gameObject.layer != 8)
+		
+		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
 			return;
+
+		// if(c.gameObject.layer != 8)
+		// 	return;
 
 		if(objectsTouching != null)
 			if(!objectsTouching.Contains(c.gameObject))

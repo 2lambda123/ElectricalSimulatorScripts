@@ -79,7 +79,7 @@ public class Grabber : MonoBehaviour
             if(  this.grabbed != null)
             {
                 Vector3 x = this.grabbed.transform.position;
-                Debug.Log("Distance!: " + Vector3.Distance(x, otherV));
+                // Debug.Log("Distance!: " + Vector3.Distance(x, otherV));
                 if( Vector3.Distance(x, otherV) <= 1 )
                     this.grabbed.transform.position = otherV;
                 this.grabbed = null;

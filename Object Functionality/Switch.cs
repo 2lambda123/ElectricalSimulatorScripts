@@ -31,17 +31,28 @@ public class Switch : MonoBehaviour
         isOn = true;
     }
 
+    public void toggle()
+    {
+        this.isOn = !this.isOn;
+    }
+
     // Update is called once per frame
     void Update()
     {
 
-        if( Input.GetMouseButtonUp(0))
-        {
-            this.isOn = !this.isOn;
-        }
+        // if( Input.GetMouseButtonUp(0))
+        // {
+        //     this.isOn = !this.isOn;
+        // }
         lineSideNodeList = lineSideNode.GetComponent<InteractionNode>().getTouching();
         loadSideNodeList = loadSideNode.GetComponent<InteractionNode>().getTouching();
-        
+
+
+        if( loadSideNode.GetComponent<SubPotential>() ==  null)
+            this.lineSideHot = false;
+        else
+            this.lineSideHot = true;
+
         if(isOn)
         {
             energizeLoad();

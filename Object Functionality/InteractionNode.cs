@@ -25,7 +25,18 @@ public class InteractionNode : MonoBehaviour
 
     public Potential getPotential()
     {
-        return this.touching[0].GetComponent<SubPotential>().GetPotential();
+        if(this.touching.Count == 0 )
+            return null;
+            
+        SubPotential sp = this.touching[0].GetComponent<SubPotential>();
+        if( sp == null )
+            return null;
+            
+        Potential p = sp.GetPotential();
+        if( p == null )
+            return null;
+            
+        return p;
     }
 
     public void resetScale()
