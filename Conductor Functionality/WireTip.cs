@@ -21,6 +21,11 @@ public class WireTip : MonoBehaviour
         this.parent = obj;
     }
 
+	public GameObject getParent()
+	{
+		return this.parent;
+	}
+
     public Conductor getParentConductor()
     {
         Conductor c = parent.GetComponent<Conductor>();
@@ -45,7 +50,7 @@ public class WireTip : MonoBehaviour
 		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
 			return;
 
-		if(c.gameObject.GetComponent<SubPotential>() != null)
+		if(c.gameObject.GetComponent<SubPotential>() == null)
 			return;
 
 		objectsTouching.Add(c.gameObject);
@@ -56,10 +61,7 @@ public class WireTip : MonoBehaviour
 		if(c.gameObject == null )
 			return;
 
-		if(c.gameObject.layer < 7 || c.gameObject.layer > 8)
-			return;
-
-		if(c.gameObject.GetComponent<SubPotential>() == null)
+		if(c.gameObject.layer != 8)
 			return;
 
 		if(objectsTouching != null)

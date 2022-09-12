@@ -37,13 +37,16 @@ public class Conductor : MonoBehaviour
 
     private bool debug;
 
-    private bool canCheck;
+
+    public List<GameObject> path;
 
     void Start()
     {
             // Must be called to setup 
         if( potential != null )
             setPotential(null);
+
+        path = new List<GameObject>();
 
             // Set up wire line
         //Draw a line
@@ -60,9 +63,10 @@ public class Conductor : MonoBehaviour
         List<GameObject> la;
         List<GameObject> lb;
 
-        Potential ts = findSource();
+        this.path.Clear();
+        Potential ts = findSource(ref this.path);
 
-        if(!ts)
+        if(ts == null)
         {
             turnOff();
             // Debug.Log(gameObject.name + " did NOT FoundSource");
@@ -86,7 +90,7 @@ public class Conductor : MonoBehaviour
     public Potential getPotential()
     {
         if(this.potential == null)
-        Debug.Log("REUTRUNIGN NULL POTENTIAL");
+            Debug.Log("REUTRUNIGN NULL POTENTIAL");
         return this.potential;
     }
 
@@ -100,28 +104,31 @@ public class Conductor : MonoBehaviour
     {
         if( this.potential == null )
             this.potential = p;
-
-        if( isNullSubPotential( A, B ) )
-        {
-            if(debug)
-                Debug.Log("Added Sub Potential");
-                // SubPotential is an object that is responsible for being able to pass between objects to make a seamless passing
-            A.AddComponent<SubPotential>().setPotential(potential, this.gameObject);
-            B.AddComponent<SubPotential>().setPotential(potential, this.gameObject);
-        }else
-            if(debug)
-                Debug.Log("Did not add subpotential to objects");
+        
+        isNullSubPotential(ref A);
+        isNullSubPotential(ref B);
     }
 
     public bool turnOff()
     {
         if( A.GetComponent<SubPotential>() != null )
-        A.GetComponent<SubPotential>().removeSelf();
+            A.GetComponent<SubPotential>().removeSelf();
         
         if( B.GetComponent<SubPotential>() != null )
-        B.GetComponent<SubPotential>().removeSelf();
+            B.GetComponent<SubPotential>().removeSelf();
 
         this.potential = null;
+
+        if( A.GetComponent<SubPotential>() != null )
+            return false;
+
+        if( B.GetComponent<SubPotential>() != null )
+            return false;
+
+        if( this.potential != null )
+            return false;
+
+
         return true;
     }
 
@@ -148,19 +155,15 @@ public class Conductor : MonoBehaviour
         line.SetPosition(1, B.transform.position);
     }
 
-    private bool isNull(GameObject A, GameObject B)
-    {
-        if( A == null || B == null )
-            return true;
-        return false;
-    }
-
 		// Recursive function to check if this object has a connection to an electrical source
-	public Potential findSource()
+	public Potential findSource(ref List<GameObject> passedPath)
 	{
 
         WireTip subA = A.GetComponent<WireTip>();
         WireTip subB = B.GetComponent<WireTip>();
+
+        if( subA == null || subB == null )
+            return null;
 
         if( subA == null )
         {
@@ -177,48 +180,80 @@ public class Conductor : MonoBehaviour
         List<GameObject> aList = subA.getConnections();
         List<GameObject> bList = subB.getConnections();
 
-		foreach(GameObject obj in aList)
-		{
-			SubPotential sp = obj.GetComponent<SubPotential>();
-            if( sp == null )
-                continue;
+        Potential p;
+        p = recursionOpperations(aList, ref passedPath);
+        if( p != null )
+            return p;
 
-            if( sp.checkIfSource() )
-                return sp.getParentPotential();
-            Potential p =  obj.GetComponent<WireTip>().getParentConductor().findSource();
-            if( p != null )
-                return p;
-		}
+        p = recursionOpperations(bList, ref passedPath);
+        if( p != null )
+            return p;
 
-		foreach(GameObject obj in bList)
-		{
-			SubPotential sp = obj.GetComponent<SubPotential>();
-            if( sp == null )
-                continue;
-
-            if( sp.checkIfSource() )
-                return sp.getParentPotential();
-            Potential p =  obj.GetComponent<WireTip>().getParentConductor().findSource();
-            if( p != null )
-                return p;
-		}
-		return null;
-
+        return null;
 	}
 
-    private bool isNullSubPotential(GameObject A, GameObject B)
+    private Potential recursionOpperations(List<GameObject> l, ref List<GameObject> passedPath)
     {
-            if( isNull( A, B ) )
+       foreach(GameObject obj in l)
+        {
+            WireTip go = obj.GetComponent<WireTip>();
+            if( go != null )
+                if(  go.getParent() == this.gameObject )
+                    continue;
+
+            if( obj == B )
+                continue;
+
+            if( passedPath.Contains(obj) )
+                continue;
+
+            SubPotential sp = obj.GetComponent<SubPotential>();
+            if( sp == null )
+                continue;
+
+            if( sp.checkIfSource() )
+                return sp.getParentPotential();
+
+            if( obj.layer == 8 )
+                return obj.GetComponent<SubPotential>().GetPotential();
+            
+            if( obj.layer == 7 )
             {
-                    // SubPotential is an object that is responsible for being able to pass between objects to make a seamless passing
-                A.AddComponent<SubPotential>().setPotential(potential, this.gameObject);
-                B.AddComponent<SubPotential>().setPotential(potential, this.gameObject);
-            }else
-                if(debug)
-                    Debug.Log("Did not add subpotential to objects");
-        if( A.GetComponent<SubPotential>() == null || B.GetComponent<SubPotential>() == null )
-            return true;
+                // Potential p =  obj.GetComponent<WireTip>().getParentConductor().findSource(ref passedPath);
+                Potential p;
+                WireTip wt;
+                wt = obj.GetComponent<WireTip>();
+                Conductor pc;
+                if( wt != null )
+                {
+                    pc = wt.getParentConductor();
+                    if( pc != null )
+                    {
+                        p = pc.findSource(ref passedPath);
+
+                        if( p != null )
+                            return p;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private bool isNullSubPotential( ref GameObject obj)
+    {
+        if( obj.GetComponent<SubPotential>() == null )
+        {
+                // SubPotential is an object that is responsible for being able to pass between objects to make a seamless passing
+            obj.AddComponent<SubPotential>().setPotential(potential, this.gameObject);
+        }
         return false;
+    }
+
+       private bool isNull(GameObject A)
+    {
+        return A == null;
     }
 
 	public string toString()
