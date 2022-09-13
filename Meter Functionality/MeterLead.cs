@@ -69,25 +69,29 @@ public class MeterLead : MonoBehaviour
             {
                 if(debug)
                     Debug.Log("Meter is reading something");
+
+                if( c.gameObject.layer != 7 )
+                    continue;
                 
-                Potential p = c.gameObject.GetComponent<Potential>();
-                Neutral n = c.gameObject.GetComponent<Neutral>();
+                SubPotential p = c.gameObject.GetComponent<SubPotential>();
 
-                if(p!= null)
+                if(p == null)
                 {
-                    this.potentialReading = new reading(p.getPhase(), p.getPotential(), p.getAmperage());
-
-                    if(debug)
-                    {
-                        Debug.Log("Meter reading: " + this.potentialReading.toString());
-                        Debug.Log("Meter reading2: " + p.getPotential().ToString());
-                    }
-                }else if(n!=null)
-                {
-                    this.potentialReading = new reading('n', 0, 0);
+                    this.potentialReading = new reading(' ', 0, 0);
+                    continue;
                 }
-                else
-                    this.potentialReading = new reading(' ',0,0);
+
+                Debug.Log("Got new reading!");
+                this.potentialReading = new reading(p.getPhase(), p.getMyPotential(), p.getAmperage());
+
+                // if(debug)
+                // {
+                //     Debug.Log("Meter reading: " + this.potentialReading.toString());
+                //     Debug.Log("Meter reading2: " + p.getPotential().ToString());
+                // }
+            
+                // else
+                //     this.potentialReading = new reading(' ',0,0);
             }else{
                 this.potentialReading = new reading(' ',0,0);
             }
