@@ -31,11 +31,6 @@ public class Switch : MonoBehaviour
         isOn = true;
     }
 
-    public void toggle()
-    {
-        this.isOn = !this.isOn;
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -89,6 +84,11 @@ public class Switch : MonoBehaviour
             sp.setPotential(lineSideNode.GetComponent<InteractionNode>().getPotential(), this.gameObject);
             sp.setAsSource();
         }
+    }
+
+    public void toggle()
+    {
+        this.isOn = !isOn;
     }
 
     void deenergizeLoad()

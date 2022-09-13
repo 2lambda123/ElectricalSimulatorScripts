@@ -66,7 +66,7 @@ public class Breaker : MonoBehaviour
         return this.mypotential;
     }
 
-    void toggle()
+    public void toggle()
     {
         if(isLive)
         {
