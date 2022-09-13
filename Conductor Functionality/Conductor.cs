@@ -64,7 +64,7 @@ public class Conductor : MonoBehaviour
         List<GameObject> lb;
 
         this.path.Clear();
-        Potential ts = findSource(ref this.path);
+        Potential ts = findSource(ref this.path, this.gameObject);
 
         if(ts == null)
         {
@@ -156,7 +156,7 @@ public class Conductor : MonoBehaviour
     }
 
 		// Recursive function to check if this object has a connection to an electrical source
-	public Potential findSource(ref List<GameObject> passedPath)
+	public Potential findSource(ref List<GameObject> passedPath, GameObject previous)
 	{
 
         WireTip subA = A.GetComponent<WireTip>();
@@ -181,24 +181,24 @@ public class Conductor : MonoBehaviour
         List<GameObject> bList = subB.getConnections();
 
         Potential p;
-        p = recursionOpperations(aList, ref passedPath);
+        p = recursionOpperations(aList, ref passedPath, previous);
         if( p != null )
             return p;
 
-        p = recursionOpperations(bList, ref passedPath);
+        p = recursionOpperations(bList, ref passedPath, previous);
         if( p != null )
             return p;
 
         return null;
 	}
 
-    private Potential recursionOpperations(List<GameObject> l, ref List<GameObject> passedPath)
+    private Potential recursionOpperations(List<GameObject> l, ref List<GameObject> passedPath, GameObject previous)
     {
        foreach(GameObject obj in l)
         {
             WireTip go = obj.GetComponent<WireTip>();
             if( go != null )
-                if(  go.getParent() == this.gameObject )
+                if(  go.getParent() == previous )
                     continue;
 
             if( obj == B )
@@ -229,7 +229,7 @@ public class Conductor : MonoBehaviour
                     pc = wt.getParentConductor();
                     if( pc != null )
                     {
-                        p = pc.findSource(ref passedPath);
+                        p = pc.findSource(ref passedPath, this.gameObject);
 
                         if( p != null )
                             return p;
