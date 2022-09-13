@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Switch : MonoBehaviour
 {
-    public GameObject lineSide;
-    public GameObject loadSide;
+    public GameObject lineSideNode;
+    public GameObject loadSideNode;
+
+    public List<GameObject> lineSideNodeList;
+    public List<GameObject> loadSideNodeList;
 
 
     public GameObject switchLever;
@@ -28,97 +31,101 @@ public class Switch : MonoBehaviour
         isOn = true;
     }
 
+    public void toggle()
+    {
+        this.isOn = !this.isOn;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        SubPotential pIn = lineSide.GetComponent<SubPotential>();
-        SubPotential pOut = loadSide.GetComponent<SubPotential>();
 
-            // Line side checks
-        if( pIn == null )
-            lineSideHot = false;
-        else
-            lineSideHot = true;
+        // if( Input.GetMouseButtonUp(0))
+        // {
+        //     this.isOn = !this.isOn;
+        // }
+        lineSideNodeList = lineSideNode.GetComponent<InteractionNode>().getTouching();
+        loadSideNodeList = loadSideNode.GetComponent<InteractionNode>().getTouching();
 
-            // Load side checks
-        if( pOut == null )
-            loadSideHot = false;
+
+        if( loadSideNode.GetComponent<SubPotential>() ==  null)
+            this.lineSideHot = false;
         else
-            loadSideHot = true;
+            this.lineSideHot = true;
 
         if(isOn)
         {
-            if(lineSideHot && !loadSideHot)
-                energizeLoad(pIn);
-            if(loadSideHot && !lineSideHot)
-                deenergizeLoad();
-            
-            makeConnections();
+            energizeLoad();
+            // makeConnections();
+        }else{
+            deenergizeLoad();
         }
-        // else{
-        //     if(pOut)
-        //         pOut.setAsInactive();
+
+        // if( isOn != lastState )
+        // {
+        //     if(isOn)
+        //     {
+        //         this.switchLever.transform.position = onTransform.position;
+        //         this.switchLever.transform.rotation = onTransform.rotation; // eulerAngles = new Vector3(this.switchLever.transform.rotation.x-45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
+        //     }
+        //     else
+        //     {
+        //         this.switchLever.transform.position = offTransform.position;
+        //         this.switchLever.transform.rotation = offTransform.rotation; //eulerAngles = new Vector3(this.switchLever.transform.rotation.x+45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
+        //     }
+
+        //     lastState = isOn;
+        //     //switchFlipping.Play(0);
         // }
+    }
 
-        if( isOn != lastState )
+    void energizeLoad()
+    {
+        SubPotential sp = loadSideNode.GetComponent<SubPotential>();
+        if( sp == null )
         {
-            if(isOn)
-            {
-                this.switchLever.transform.position = onTransform.position;
-                this.switchLever.transform.rotation = onTransform.rotation; // eulerAngles = new Vector3(this.switchLever.transform.rotation.x-45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
-            }
-            else
-            {
-                this.switchLever.transform.position = offTransform.position;
-                this.switchLever.transform.rotation = offTransform.rotation; //eulerAngles = new Vector3(this.switchLever.transform.rotation.x+45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
-            }
+            sp = loadSideNode.AddComponent<SubPotential>();
 
-            lastState = isOn;
-            //switchFlipping.Play(0);
+            sp.setPotential(lineSideNode.GetComponent<InteractionNode>().getPotential(), this.gameObject);
+            sp.setAsSource();
         }
-    }
-
-
-    void OnMouseDown()
-    {
-        isOn = !isOn;
-    }
-
-    void energizeLoad(SubPotential pIn)
-    {
-        SubPotential sp = loadSide.AddComponent<SubPotential>();
-        sp.setPotential(pIn.GetPotential(), this.gameObject);
-        sp.setAsSource();
     }
 
     void deenergizeLoad()
     {
-        Destroy(loadSide.GetComponent<SubPotential>());
+        SubPotential sp = loadSideNode.GetComponent<SubPotential>();
+        if( sp != null )
+            sp.removeSelf();
+    }
+
+    public Potential getLinePotential()
+    {
+        return this.lineSideNode.GetComponent<InteractionNode>().getPotential();
     }
 
     void switchFunction()
     {
 
 
-            // Do nothing if there are no line and load side objects
-        if(lineSide == null || loadSide == null)
-        {
-            if(isOn)
-            {
-                this.switchLever.transform.eulerAngles = new Vector3(this.switchLever.transform.rotation.x+45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
-            }
-            else
-            {
-                this.switchLever.transform.eulerAngles = new Vector3(this.switchLever.transform.rotation.x-45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
-            }
+        //     // Do nothing if there are no line and load side objects
+        // if(lineSide == null || loadSide == null)
+        // {
+        //     if(isOn)
+        //     {
+        //         this.switchLever.transform.eulerAngles = new Vector3(this.switchLever.transform.rotation.x+45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
+        //     }
+        //     else
+        //     {
+        //         this.switchLever.transform.eulerAngles = new Vector3(this.switchLever.transform.rotation.x-45, this.switchLever.transform.rotation.y, this.switchLever.transform.rotation.z);
+        //     }
 
-            //switchFlipping.Play(0);
-            lastState = !lastState;
-            return;
-        }
+        //     //switchFlipping.Play(0);
+        //     lastState = !lastState;
+        //     return;
+        // }
 
-        Potential p = lineSide.GetComponent<Potential>();
-        Neutral n = lineSide.GetComponent<Neutral>();
+        // Potential p = lineSide.GetComponent<Potential>();
+        // Neutral n = lineSide.GetComponent<Neutral>();
 
 
     //     if( isOn )
@@ -162,18 +169,18 @@ public class Switch : MonoBehaviour
     //         switchFlipping.Play(0);
     }
 
-    private void makeConnections()
-    {
-        Amperage aIn = lineSide.GetComponent<Amperage>();
-        Amperage aOut = lineSide.GetComponent<Amperage>();
+    // private void makeConnections()
+    // {
+    //     Amperage aIn = lineSide.GetComponent<Amperage>();
+    //     Amperage aOut = lineSide.GetComponent<Amperage>();
 
-        if( aIn != null )
-            if( aOut != null )
-            {
-                aIn.addRemoteConnection(loadSide);
-                aOut.addRemoteConnection(lineSide);
-            }
+    //     if( aIn != null )
+    //         if( aOut != null )
+    //         {
+    //             aIn.addRemoteConnection(loadSide);
+    //             aOut.addRemoteConnection(lineSide);
+    //         }
 
-    }
+    // }
 
 }

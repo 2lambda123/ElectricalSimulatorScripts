@@ -17,6 +17,11 @@ public class SubPotential : MonoBehaviour
     
     public void setPotential(Potential p, GameObject parent)
     {
+		if( p == null )
+		{
+			removeSelf();
+			return;
+		}
 		this.potential = p;
         this.phase = p.getPhase();
         this.myPotential = p.getPotential();
@@ -29,14 +34,29 @@ public class SubPotential : MonoBehaviour
 		if( bkr != null )
 			return bkr.getPotential();
 
+		Switch sw = this.parent.GetComponent<Switch>();
+		if( sw != null )
+		{
+			Potential potentiallyTheFixQuestionMark = sw.getLinePotential();
+			if( potentiallyTheFixQuestionMark != null )
+				return potentiallyTheFixQuestionMark;
+		}
+
+		InteractionNode inter = this.parent.GetComponent<InteractionNode>();
+		if( inter != null )
+		{
+			return inter.getPotential();
+		}
+
         Conductor pc = this.parent.GetComponent<Conductor>();
-        if( pc == null )
+        if( pc != null )
         {
-            Debug.Log("PARENT HAD NO CONDUCTOR");
-			return null;
+        	return pc.getPotential();
         }
 
-        return pc.getPotential();
+
+		Debug.Log(this.gameObject + " has nothing to look for potential");
+		return null;
     }
 
 	public Potential GetPotential()
