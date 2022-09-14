@@ -22,15 +22,23 @@ public class MeterLead : MonoBehaviour
 
     [SerializeField]
     private int slectedFunction;
+    [SerializeField]
+    private string myName;
+
+    public List<GameObject> objectsTouching;
 
 
     // Start is called before the first frame update
     void Start()
     {
         potentialReading = new reading(' ', 0, 0);
-    }private
+        this.myName = this.gameObject.name;
+
+        if( this.objectsTouching == null )
+            objectsTouching = new List<GameObject>();
+    }
     
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         switch( slectedFunction )
         {
@@ -81,7 +89,7 @@ public class MeterLead : MonoBehaviour
                     continue;
                 }
 
-                Debug.Log("Got new reading!");
+                // Debug.Log("Got new reading!");
                 this.potentialReading = new reading(p.getPhase(), p.getMyPotential(), p.getAmperage());
 
                 // if(debug)
@@ -100,34 +108,48 @@ public class MeterLead : MonoBehaviour
     public bool ohmMeter()
     {
         bool found;
+        Debug.Log("Using ohm meter to check " + objectsTouching.Count + " nodes");
+        foreach(GameObject obj in objectsTouching)
+        {
+            Debug.Log("Checking for pos on " + obj.name);
+            // if( obj.name == "Meter Lead Pos" )
+            //     return true;
 
-            // The posative lead is what is being searched for, so this would always return true if not removed
-        if( this.gameObject.name == "PosLead")
-            return false;
+            WireTip wt = obj.GetComponent<WireTip>();
+            if( wt == null )
+                continue;
+
+            Conductor con = wt.getParentConductor();
+            if( con == null )
+                continue;
+
+            found = con.findPosLead(this.gameObject );
+            if( found )
+                return true;
+        }
+        return false;
 
             // Collision detection
-		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.2f);
+		// Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.5f);
 
-            // Itterating through imediate area
-        foreach(Collider col in hitColliders)
-        {
-                // Verify not checking self
-            if( this.gameObject.Equals(col.gameObject))
-                continue;
+        //     // Itterating through imediate area
+        // foreach(Collider col in hitColliders)
+        // {
+        //     if( col.gameObject.layer != 7 && col.gameObject.layer != 6 )
+        //         continue;
                 
-            Continuity con = col.gameObject.GetComponent<Continuity>();
+        //     if( col.gameObject.GetComponent<MeterLead>() != null )
+        //         return true;
 
-            if(con != null)
-            {
-                found = con.findPosLead(this.gameObject);
-                if( found )
-                {
-                    if(debug)
-                        Debug.Log("HAS CONTINUITY!!!");
-                    return true;
-                }
-            }
-        }
+        //     WireTip wt = col.GetComponent<WireTip>();
+        //     found = wt.findPosLead();
+        //     if( found )
+        //     {
+        //         // if(debug)
+        //             Debug.Log("HAS CONTINUITY!!!");
+        //         return true;
+        //     }
+        // }
         return false;
     }
 
@@ -172,6 +194,32 @@ public class MeterLead : MonoBehaviour
             if(debug)
                 Debug.Log("No path");
     }
+
+	void OnTriggerEnter(Collider c)
+	{		
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 7 )
+			return;
+
+        if( !objectsTouching.Contains(c.gameObject) )
+		    objectsTouching.Add(c.gameObject);
+	}
+
+	void OnTriggerStay(Collider c)
+	{
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 7 )
+			return;
+
+        if(!objectsTouching.Contains(c.gameObject))
+            objectsTouching.Add(c.gameObject);
+	}
+
+	void OnTriggerExit(Collider c)
+	{
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 7 )
+			return;
+            
+		objectsTouching.Remove(c.gameObject);
+	}
 
     public reading getReading()
     {

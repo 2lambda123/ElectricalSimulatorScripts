@@ -87,6 +87,137 @@ public class Conductor : MonoBehaviour
         draw();
     }
 
+		// Recursive function to check if this object has a connection to an electrical source
+	public bool findPosLead( GameObject previous )
+	{
+        Debug.Log("Searching from [" + this.gameObject.name + "]");
+        // WireTip subA = A.GetComponent<WireTip>();
+        // WireTip subB = B.GetComponent<WireTip>();
+
+        // if( subA == null || subB == null )
+        // {
+        //     Debug.Log("Tit magnet");
+        //     return false;
+        // }
+
+        // if( subA == null )
+        // {
+        //     Debug.Log("Resetting A!");
+        //     subA = A.AddComponent<WireTip>();
+        //     subA.setParent(this.gameObject);
+        // }
+        // if( subB == null )
+        // {
+        //     Debug.Log("Resetting B!");
+        //     subB = B.AddComponent<WireTip>();
+        //     subB.setParent(this.gameObject);
+        // }
+
+        
+        // List<GameObject> aList = subA.getConnections();
+        // List<GameObject> bList = subB.getConnections();
+
+        // if( aList == null )
+        //     Debug.Log("A LIST DOESN'T EXIST!");
+        // if( bList == null )
+        //     Debug.Log("B LIST DOESN'T EXIST!");
+
+        Debug.Log("Getting ready to check for stuff");
+
+        bool p;
+        p = recursionOpperationsContinuity(A, this.gameObject, previous);
+        if( p )
+        {
+            Debug.Log("Returning True!");
+            return true;
+        }
+
+        p = recursionOpperationsContinuity(B, this.gameObject, previous);
+        if( p )
+            return true;
+
+
+        return false;
+	}
+
+    private bool recursionOpperationsContinuity(GameObject topObj, GameObject previous, GameObject previousConductor)
+    {
+        WireTip wt = topObj.GetComponent<WireTip>();
+        if( wt == null )
+        {
+            Debug.Log("No wire tip!!!");
+            return false;
+        }
+
+        List<GameObject> list = wt.getConnections();
+        if( list.Count == 0 )
+        {
+            Debug.Log("Empty List!!!");
+            return false;
+        }
+
+        foreach(GameObject obj in list)
+        {
+            // ERROR: This is not checking on WireA or WireB!!! It's checking Wire (2)!!!
+            Debug.Log( "Recursively checking on [" + obj.name + "] from [" + topObj.name + "]");
+            if( obj.layer != 6 && obj.layer != 7 )
+                continue;
+
+            // Debug.Log( obj.name );
+            // if( obj == previous )
+            // {
+            //     Debug.Log(gameObject.name + "found the prevouse ");
+            //     continue;
+            // }
+
+            // WireTip go = obj.GetComponent<WireTip>();
+            // if( go == null )
+            // {
+            //     Debug.Log("GO null on " + obj.name);
+            //     continue;
+            // }
+
+            MeterLead ml = obj.GetComponent<MeterLead>();
+            if( ml == null )
+                continue;
+
+            // Debug.Log("Fake ture!");
+            // return true;
+            // if(  go.getParent() == previous )
+            //     continue;
+
+            // if( obj == B )
+            //     continue;
+
+            // if( go.checkForPosLead() )
+            //     return true;
+
+            if( obj.name == "Meter Lead Pos" )
+            {
+                Debug.Log("Read true");
+                return true;
+            }
+        }
+
+        foreach(GameObject obj in list)
+        {
+            wt = obj.GetComponent<WireTip>();
+            if( wt == null )
+                continue;
+
+            if( wt.getParent() == previousConductor )
+                continue;
+            
+            if(wt.getParentConductor().findPosLead( this.gameObject ))
+                return true;
+        }
+
+        // if( go.getParentConductor().findPosLead(this.gameObject) )
+        //     return true;
+
+        return false;
+    }
+
     public Potential getPotential()
     {
         if(this.potential == null)
@@ -173,7 +304,7 @@ public class Conductor : MonoBehaviour
         if( subB == null )
         {
             subB = B.AddComponent<WireTip>();
-            subA.setParent(this.gameObject);
+            subB.setParent(this.gameObject);
         }
 
         

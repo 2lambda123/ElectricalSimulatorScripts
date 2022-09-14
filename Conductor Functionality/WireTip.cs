@@ -44,10 +44,46 @@ public class WireTip : MonoBehaviour
 		return objectsTouching;
 	}
 
+	public bool findPosLead(GameObject prev)
+	{
+		// foreach(GameObject obj in objectsTouching)
+		// {
+		// 	// if( obj.layer != 6 )
+		// 	// 	continue;
+
+		// 	if( obj.name == "Meter Lead Pos")
+		// 		return true;
+		// }
+
+		if( getParentConductor().findPosLead( prev ) )
+			return true;
+
+		// Debug.Log("Couldn't find pos");
+
+		return false;
+	}
+
+	public bool checkForPosLead()
+	{
+		Debug.Log("Running on " + gameObject.name);
+		foreach(GameObject obj in objectsTouching)
+		{
+			// if( obj.layer != 6 )
+			// 	continue;
+
+			if( obj.name == "Meter Lead Pos")
+				return true;
+		}
+		return false;
+	}
+
 	void OnTriggerEnter(Collider c)
 	{
 		
-		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 8 )
+			return;
+
+		if( c.gameObject == parent )
 			return;
 
 		// if(c.gameObject.GetComponent<SubPotential>() == null)
@@ -62,7 +98,7 @@ public class WireTip : MonoBehaviour
 			return;
 
 		
-		if(c.gameObject.layer < 7 || c.gameObject.layer > 8 )
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 8 )
 			return;
 
 		// if(c.gameObject.layer != 8)
@@ -75,7 +111,7 @@ public class WireTip : MonoBehaviour
 
 	void OnTriggerExit(Collider c)
 	{
-		if(c.gameObject.layer < 7 || c.gameObject.layer > 8)
+		if(c.gameObject.layer < 6 || c.gameObject.layer > 8)
 			return;
 
 		// if(c.gameObject.GetComponent<SubPotential>() == null)
