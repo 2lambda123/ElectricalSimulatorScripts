@@ -53,10 +53,20 @@ public class Multimeter : MonoBehaviour
                 break;
             case 2:
                 setSelectedFeatureText("R");
+                resistance();
                 break;
         }
     }
 
+    void resistance()
+    {
+        float res = blackLead.getResistanceReading();
+        if( res == -1 )
+            setMeterOutputText("OL");
+        else
+            setMeterOutputText(res.ToString());
+
+    }
 
     void ohmMeter()
     {

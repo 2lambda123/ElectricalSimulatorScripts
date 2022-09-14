@@ -153,46 +153,60 @@ public class MeterLead : MonoBehaviour
         return false;
     }
 
-    void getResistanceReading()
+    public float getResistanceReading()
     {
             // The posative lead is what is being searched for, so this would always return true if not removed
         if( this.gameObject.name == "PosLead")
-            return;
+            return -1.0f;;
 
         bool found = false;
         Queue<GameObject> path = new Queue<GameObject>();
+        float totalResistance = 0.0f;
 
-		Collider[] hitColliders = Physics.OverlapSphere(meterTip.position,0.2f);
-        
-        foreach(Collider c in hitColliders)
+        foreach(GameObject obj in objectsTouching)
         {
-            if( c.Equals(this.gameObject) )
+            if( obj.Equals(this.gameObject) )
                 continue;
 
-            Resistance r = c.gameObject.GetComponent<Resistance>();
-            if( r!= null)
-                found = r.getResistanceReading(ref path, this.gameObject);
+            WireTip wt = obj.GetComponent<WireTip>();
+            if( wt == null )
+                continue;
+
+            found = wt.getParentConductor().getReisitance(ref path, this.gameObject);
+            if( found )
+            {
+                // Do que calculations
+                Debug.Log("FOUND RESISTANCE");
+                foreach(GameObject o in path)
+                {
+                    if(debug)
+                        Debug.Log(o.name);
+                    totalResistance += o.GetComponent<Conductor>().getWireResistance();
+                }
+                return totalResistance;
+            }
             if(found)
                 break;
         }
-
-        if(found)
-        {
-            if(debug)
-                Debug.Log("GOT A FULL PATH!");
-            float totalResistance = 0.0f;
-            foreach(GameObject o in path)
-            {
-                if(debug)
-                    Debug.Log(o.name);
-                totalResistance += o.GetComponent<Resistance>().getReisitance();
-            }
-            if(debug)
-                Debug.Log("END OF PATH\tRES: " + totalResistance);
-        }
-        else
-            if(debug)
-                Debug.Log("No path");
+        return -1.0f;
+        // Que Shit
+        // if(found)
+        // {
+        //     if(debug)
+        //         Debug.Log("GOT A FULL PATH!");
+        //     float totalResistance = 0.0f;
+        //     foreach(GameObject o in path)
+        //     {
+        //         if(debug)
+        //             Debug.Log(o.name);
+        //         totalResistance += o.GetComponent<Resistance>().getReisitance();
+        //     }
+        //     if(debug)
+        //         Debug.Log("END OF PATH\tRES: " + totalResistance);
+        // }
+        // else
+        //     if(debug)
+        //         Debug.Log("No path");
     }
 
 	void OnTriggerEnter(Collider c)
