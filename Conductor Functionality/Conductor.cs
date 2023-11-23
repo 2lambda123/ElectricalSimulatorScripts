@@ -31,7 +31,8 @@ public class Conductor : MonoBehaviour
     private List<GameObject> childrenB;
 
     private float wireLength;
-    private float wireSize;
+    private int wireSize = 12;
+    private const float RESISTANCE_PER_THOUSAND_FEET = 1.588f/1000.0f;
 
     public bool isRemoteConnection;
 
@@ -42,6 +43,9 @@ public class Conductor : MonoBehaviour
 
     void Start()
     {
+        if( wireLength == 0 )
+            wireLength = 1000.0f;
+
             // Must be called to setup 
         if( potential != null )
             setPotential(null);
@@ -87,11 +91,193 @@ public class Conductor : MonoBehaviour
         draw();
     }
 
+		// Recursive function to check if this object has a connection to an electrical source
+	public bool findPosLead( GameObject previous )
+	{
+
+        Debug.Log("Getting ready to check for stuff");
+
+        bool p;
+        p = recursionOpperationsContinuity(A, this.gameObject, previous);
+        if( p )
+        {
+            Debug.Log("Returning True!");
+            return true;
+        }
+
+        p = recursionOpperationsContinuity(B, this.gameObject, previous);
+        if( p )
+            return true;
+
+
+        return false;
+	}
+
+    private bool recursionOpperationsContinuity(GameObject topObj, GameObject previous, GameObject previousConductor)
+    {
+        WireTip wt = topObj.GetComponent<WireTip>();
+        if( wt == null )
+        {
+            Debug.Log("No wire tip!!!");
+            return false;
+        }
+
+        List<GameObject> list = wt.getConnections();
+        if( list.Count == 0 )
+        {
+            Debug.Log("Empty List!!!");
+            return false;
+        }
+
+        foreach(GameObject obj in list)
+        {
+            // ERROR: This is not checking on WireA or WireB!!! It's checking Wire (2)!!!
+            Debug.Log( "Recursively checking on [" + obj.name + "] from [" + topObj.name + "]");
+            if( obj.layer != 6 && obj.layer != 7 )
+                continue;
+
+            // Debug.Log( obj.name );
+            // if( obj == previous )
+            // {
+            //     Debug.Log(gameObject.name + "found the prevouse ");
+            //     continue;
+            // }
+
+            // WireTip go = obj.GetComponent<WireTip>();
+            // if( go == null )
+            // {
+            //     Debug.Log("GO null on " + obj.name);
+            //     continue;
+            // }
+
+            MeterLead ml = obj.GetComponent<MeterLead>();
+            if( ml == null )
+                continue;
+
+            // Debug.Log("Fake ture!");
+            // return true;
+            // if(  go.getParent() == previous )
+            //     continue;
+
+            // if( obj == B )
+            //     continue;
+
+            // if( go.checkForPosLead() )
+            //     return true;
+
+            if( obj.name == "Meter Lead Pos" )
+            {
+                Debug.Log("Read true");
+                return true;
+            }
+        }
+
+        foreach(GameObject obj in list)
+        {
+            wt = obj.GetComponent<WireTip>();
+            if( wt == null )
+                continue;
+
+            if( wt.getParent() == previousConductor )
+                continue;
+            
+            if(wt.getParentConductor().findPosLead( this.gameObject ))
+                return true;
+        }
+
+        // if( go.getParentConductor().findPosLead(this.gameObject) )
+        //     return true;
+
+        return false;
+    }
+
     public Potential getPotential()
     {
         if(this.potential == null)
             Debug.Log("REUTRUNIGN NULL POTENTIAL");
         return this.potential;
+    }
+
+    public float getWireResistance()
+    {
+        return wireLength * RESISTANCE_PER_THOUSAND_FEET;
+    }
+
+    public bool getReisitance( ref Queue<GameObject> path, GameObject previous )
+        {
+
+            Debug.Log("Getting ready to check for stuff");
+
+            bool p;
+            p = getResistanceReading(ref path, A, previous);
+            if( p )
+            {
+                Debug.Log("Returning True!");
+                path.Enqueue(this.gameObject);
+                return true;
+            }
+
+            p = getResistanceReading(ref path, B, previous);
+            if( p )
+            {
+                Debug.Log("Returning True!");
+                path.Enqueue(this.gameObject);
+                return true;
+            }
+
+
+            return false;
+        }
+
+    public bool getResistanceReading(ref Queue<GameObject> path, GameObject topObj, GameObject previous)
+    {
+		bool found = false;
+        WireTip wt = topObj.GetComponent<WireTip>();
+        if( wt == null )
+        {
+            Debug.Log("No wire tip!!!");
+            return false;
+        }
+
+        List<GameObject> list = wt.getConnections();
+        if( list.Count == 0 )
+        {
+            Debug.Log("Empty List!!!");
+            return false;
+        }
+        
+        foreach(GameObject obj in list )
+        {
+				// Layer 6 is for test equipment, which means the meter lead can be here
+			if( obj.layer != 6 )
+                continue;
+
+            MeterLead ml = obj.GetComponent<MeterLead>();
+            if( ml == null )
+                continue;
+
+            if( obj.name == "Meter Lead Pos")
+            {
+                return true;
+            }
+        }
+
+        foreach(GameObject obj in list)
+        {
+            wt = obj.GetComponent<WireTip>();
+            if( wt == null )
+                continue;
+
+            if( wt.getParent() == previous )
+                continue;
+            
+            if(wt.getParentConductor().getReisitance(ref path, this.gameObject ));
+            {
+                return true;
+            }
+        }
+
+		return false;
     }
 
     public void setAsRemoteConnection(bool status)
@@ -173,7 +359,7 @@ public class Conductor : MonoBehaviour
         if( subB == null )
         {
             subB = B.AddComponent<WireTip>();
-            subA.setParent(this.gameObject);
+            subB.setParent(this.gameObject);
         }
 
         

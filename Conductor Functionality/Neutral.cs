@@ -35,8 +35,8 @@ public class Neutral : MonoBehaviour
 		if( this.potential == null )
 			this.potential = this.gameObject.GetComponent<Potential>();
 		
-		if( this.potential == null )
-			Debug.Log("Looks like " + gameObject.name + " needs potential!");
+		// if( this.potential == null )
+		// 	Debug.Log("Looks like " + gameObject.name + " needs potential!");
 	}
 
 

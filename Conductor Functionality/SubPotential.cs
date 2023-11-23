@@ -67,6 +67,11 @@ public class SubPotential : MonoBehaviour
 		return this.potential;
 	}
 
+	public char getPhase()
+	{
+		return this.phase;
+	}
+
 	public void setAsSource()
 	{
 		this.isSource = true;
@@ -75,6 +80,16 @@ public class SubPotential : MonoBehaviour
 	public bool checkIfSource()
 	{
 		return this.isSource;
+	}
+
+	public int getMyPotential()
+	{
+		return this.myPotential;
+	}
+
+	public float getAmperage()
+	{
+		return 0.0f;
 	}
 
 	public void removeSelf()
