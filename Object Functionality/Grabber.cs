@@ -46,6 +46,16 @@ public class Grabber : MonoBehaviour
                         this.holding = true;
 
                         otherTouch = hit.collider.gameObject.GetComponent<WireTip>().getConnections();
+                    }else if(hit.collider.gameObject.layer == 9)
+                    {
+                        Breaker bkr = hit.collider.gameObject.GetComponent<Breaker>();
+                        Switch swi = hit.collider.gameObject.GetComponent<Switch>();
+
+                        if( bkr != null )
+                            bkr.toggle();
+
+                        if( swi != null )
+                            swi.toggle();
                     }
                 }
             }

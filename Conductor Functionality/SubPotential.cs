@@ -54,6 +54,9 @@ public class SubPotential : MonoBehaviour
         	return pc.getPotential();
         }
 
+		Neutral n = this.parent.GetComponent<Neutral>();
+		if( n != null )
+			return this.potential;
 
 		Debug.Log(this.gameObject + " has nothing to look for potential");
 		return null;
